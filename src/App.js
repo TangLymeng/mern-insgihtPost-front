@@ -1,12 +1,19 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom"
-import Homepage from "./components/Homepage/Homepage"
-import Login from "./components/Users/Login"
-import UserProfile from "./components/Users/UserProfile"
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Homepage from "./components/Homepage/Homepage";
+import Login from "./components/Users/Login";
+import { useSelector } from "react-redux";
+import UserProfile from "./components/Users/UserProfile";
+import PublicNavbar from "./components/Navbar/PublicNavbar";
+import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 
 export default function App() {
-  
+   //! Get the login user from store
+   const { userAuth } = useSelector((state) => state?.users);
+   const isLogin = userAuth?.userInfo?.token;
   return (
     <BrowserRouter>
+      {/* Navbar here */}
+      {isLogin ? <PrivateNavbar /> : <PublicNavbar />}
       <Routes>
         <Route path="/" element={<Homepage />}></Route>
         <Route path="/login" element={<Login />}></Route>
@@ -14,5 +21,5 @@ export default function App() {
         <Route path="/user-profile" element={<UserProfile />}></Route>
       </Routes>
     </BrowserRouter>
-  )
+  );
 }
