@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 
 import { Link } from "react-router-dom";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { loginAction } from "../../redux/slices/users/usersSlices";
+import LoadingComponent from "../Alert/Loadingcomponent";
+import ErrorMsg from "../Alert/ErrorMsg";
+import SuccessMsg from "../Alert/SuccessMsg";
 
 const Login = () => {
   //dispatch
@@ -37,6 +40,11 @@ const Login = () => {
   };
   //store data
 
+  const { userAuth, loading, error, success } = useSelector(
+    (state) => state?.users
+  );
+  console.log(success);
+
   return (
     <section className="py-16 xl:pb-56 bg-white overflow-hidden">
       <div className="container px-4 mx-auto">
@@ -50,6 +58,10 @@ const Login = () => {
           <p className="mb-12 font-medium text-lg text-gray-600 leading-normal">
             Enter your details below.
           </p>
+          {/* Display error */}
+          {error && <ErrorMsg message={error?.message} />}
+          {/* success message */}
+          {success && <SuccessMsg message="Login Success" />}
           <form onSubmit={handleSubmit}>
             <label className="block mb-5">
               <input
@@ -74,12 +86,16 @@ const Login = () => {
                 onChange={handleChange}
               />
             </label>
-            <button
-              className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
-              type="submit"
-            >
-              Login Account
-            </button>
+            {loading ? (
+              <LoadingComponent />
+            ) : (
+              <button
+                className="mb-8 py-4 px-9 w-full text-white font-semibold border border-indigo-700 rounded-xl shadow-4xl focus:ring focus:ring-indigo-300 bg-indigo-600 hover:bg-indigo-700 transition ease-in-out duration-200"
+                type="submit"
+              >
+                Login Account
+              </button>
+            )}
 
             <p className="font-medium">
               <span className="m-2">Forgot Password?</span>

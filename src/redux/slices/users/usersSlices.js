@@ -9,6 +9,7 @@ const INITIAL_STATE = {
   error: null,
   users: [],
   users: null,
+  success: false,
   isUpated: false,
   isDeleted: false,
   isEmailSent: false,
@@ -54,6 +55,7 @@ const usersSlice = createSlice({
       //handle fulfilled state
       builder.addCase(loginAction.fulfilled, (state, action) => {
         state.userAuth.userInfo = action.payload;
+        state.success = true;
         state.loading = false;
         state.error = null;
       });
