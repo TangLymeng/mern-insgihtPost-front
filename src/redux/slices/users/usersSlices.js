@@ -1,7 +1,9 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
 import axios from "axios";
-import { act } from "react-dom/test-utils";
-
+import {
+  resetErrorAction,
+  resetSuccesAction,
+} from "../globalSlice/globalSlice";
 //initialstate
 
 const INITIAL_STATE = {
@@ -10,10 +12,6 @@ const INITIAL_STATE = {
   users: [],
   user: null,
   success: false,
-  isUpated: false,
-  isDeleted: false,
-  isEmailSent: false,
-  isPasswordReset: false,
   profile: {},
   userAuth: {
     error: null,
@@ -103,6 +101,14 @@ const usersSlice = createSlice({
     builder.addCase(registerAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
+    });
+    //! Reset error action
+    builder.addCase(resetErrorAction.fulfilled, (state) => {
+      state.error = null;
+    });
+    //! Reset success action
+    builder.addCase(resetSuccesAction.fulfilled, (state) => {
+      state.success = false;
     });
   },
 });
