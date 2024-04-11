@@ -8,7 +8,7 @@ const INITIAL_STATE = {
   loading: false,
   error: null,
   users: [],
-  users: null,
+  user: null,
   success: false,
   isUpated: false,
   isDeleted: false,
@@ -19,7 +19,7 @@ const INITIAL_STATE = {
     error: null,
     userInfo: localStorage.getItem("userInfo")
       ? JSON.parse(localStorage.getItem("userInfo"))
-      : null,  
+      : null,
   },
 };
 
@@ -36,7 +36,24 @@ export const loginAction = createAsyncThunk(
       );
       //! save the user into localstorage
       localStorage.setItem("userInfo", JSON.stringify(data));
-      return data;    
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+// Register Action
+export const registerAction = createAsyncThunk(
+  "users/register",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const { data } = await axios.post(
+        "http://localhost:9080/api/v1/users/register",
+        payload
+      );
+      return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
     }
@@ -52,29 +69,45 @@ export const logoutAction = createAsyncThunk("users/logout", async () => {
 
 // Users slices
 const usersSlice = createSlice({
-    name: "users",
-    initialState: INITIAL_STATE,
-    extraReducers: (builder) => {
-      //Login
-      builder.addCase(loginAction.pending, (state, action) => {
-        state.loading = true;
-      });
-      //handle fulfilled state
-      builder.addCase(loginAction.fulfilled, (state, action) => {
-        state.userAuth.userInfo = action.payload;
-        state.success = true;
-        state.loading = false;
-        state.error = null;
-      });
-      //* Handle the rejection
-      builder.addCase(loginAction.rejected, (state, action) => {
-        state.error = action.payload;
-        state.loading = false;
-      });
-    },
-  });
-  
-  //! generate reducer
-  const usersReducer = usersSlice.reducer;
-  
-  export default usersReducer;
+  name: "users",
+  initialState: INITIAL_STATE,
+  extraReducers: (builder) => {
+    //Login
+    builder.addCase(loginAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    //handle fulfilled state
+    builder.addCase(loginAction.fulfilled, (state, action) => {
+      state.userAuth.userInfo = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    //* Handle the rejection
+    builder.addCase(loginAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //! Register
+    builder.addCase(registerAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    //handle fulfilled state
+    builder.addCase(registerAction.fulfilled, (state, action) => {
+      state.user = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    //* Handle the rejection
+    builder.addCase(registerAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+  },
+});
+
+//! generate reducer
+const usersReducer = usersSlice.reducer;
+
+export default usersReducer;
