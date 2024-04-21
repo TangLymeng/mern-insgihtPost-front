@@ -7,6 +7,7 @@ import UserProfile from "./components/Users/UserProfile";
 import PublicNavbar from "./components/Navbar/PublicNavbar";
 import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 import ProctectedRoute from "./components/AuthRoute/ProtectedRoute";
+import AddPost from "./components/Posts/AddPost";
 
 export default function App() {
    //! Get the login user from store
@@ -25,6 +26,15 @@ export default function App() {
           element={
             <ProctectedRoute>
               <UserProfile />
+            </ProctectedRoute>
+          }
+        ></Route>
+        {/* add post */}
+        <Route
+          path="/add-post"
+          element={
+            <ProctectedRoute>
+              <AddPost />
             </ProctectedRoute>
           }
         ></Route>
