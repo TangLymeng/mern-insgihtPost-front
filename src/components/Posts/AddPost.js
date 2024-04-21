@@ -35,6 +35,12 @@ const AddPost = () => {
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
+
+  //! Handle image change
+  const handleFileChange = (e) => {
+    setFormData({ ...formData, image: e.target.files[0] });
+  };
+
   //! React select handle change
   const handleSelectChange = (selectedOption) => {
     setFormData({ ...formData, category: selectedOption.value });
@@ -53,7 +59,7 @@ const AddPost = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <form onSubmit={handleSubmit} className="w-full lg:w-1/2">
-        <div className="flex flex-col items-center p-10 xl:px-24 xl:pb-12 bg-white lg:max-w-xl lg:ml-auto rounded-4xl shadow-2xl">
+        <div className="flex flex-col items-center p-10 xl:px-24 xl:pb-12 bg-white lg:max-w-4xl rounded-4xl shadow-2xl">
           <h2 className="mb-4 text-2xl md:text-3xl text-coolGray-900 font-bold text-center">
             Add New Post
           </h2>
@@ -78,6 +84,8 @@ const AddPost = () => {
               className="py-3 px-3 leading-5 w-full text-coolGray-400 font-normal border border-coolGray-200 outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-lg shadow-sm"
               type="file"
               name="image"
+              onChange={handleFileChange}
+
             />
             {/* error here */}
           </label>
