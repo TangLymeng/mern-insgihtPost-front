@@ -2,6 +2,8 @@ import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchPublicPostsAction } from "../../redux/slices/posts/postsSlice";
 import Loadingcomponent from "../Alert/Loadingcomponent";
+import { Link } from "react-router-dom";
+
 const PublicPosts = () => {
   //! redux store
   const dispatch = useDispatch();
@@ -67,16 +69,15 @@ const PublicPosts = () => {
                       <p className="mb-2 text-coolGray-500 font-medium">
                         {post?.createdAt}
                       </p>
-                      <a
+                      <Link
                         className="inline-block mb-4 text-2xl md:text-3xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline"
-                        href="#"
-                      >
+                        to={`/posts/${post?._id}`}                      >
                         {post?.title}
-                      </a>
+                      </Link>
                       <p className="mb-4 text-coolGray-500">{post?.content}</p>
-                      <a
+                      <Link
                         className="inline-flex items-center text-base md:text-lg text-green-500 hover:text-green-600 font-semibold"
-                        href="#"
+                        to={`/posts/${post?._id}`}
                       >
                         <span className="mr-3">Read Post</span>
                         <svg
@@ -91,7 +92,7 @@ const PublicPosts = () => {
                             fill="currentColor"
                           />
                         </svg>
-                      </a>
+                      </Link>
                     </div>
                   );
                 })

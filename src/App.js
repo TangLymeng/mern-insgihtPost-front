@@ -8,6 +8,7 @@ import PublicNavbar from "./components/Navbar/PublicNavbar";
 import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 import ProctectedRoute from "./components/AuthRoute/ProtectedRoute";
 import AddPost from "./components/Posts/AddPost";
+import PostDetails from "./components/Posts/PostDetails";
 
 export default function App() {
    //! Get the login user from store
@@ -35,6 +36,15 @@ export default function App() {
           element={
             <ProctectedRoute>
               <AddPost />
+            </ProctectedRoute>
+          }
+        ></Route>
+         {/* post details */}
+         <Route
+          path="/posts/:postId"
+          element={
+            <ProctectedRoute>
+              <PostDetails />
             </ProctectedRoute>
           }
         ></Route>

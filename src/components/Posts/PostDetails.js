@@ -1,9 +1,6 @@
 import React from "react";
-import AddComment from "../Comments/AddComment";
-import CommentsList from "../Comments/CommentLists";
-import PostStats from "./PostStats";
 
-const PostDetailsTemplate = () => {
+const PostDetails = () => {
   return (
     <section
       className="py-16 bg-white md:py-24"
@@ -55,7 +52,7 @@ const PostDetailsTemplate = () => {
         src="https://cdn.pixabay.com/photo/2023/02/21/20/37/dandelion-7805073_960_720.jpg"
         alt
       />
-      {/* Posts stats */}
+
       <div
         style={{
           display: "flex",
@@ -64,17 +61,7 @@ const PostDetailsTemplate = () => {
           height: "100%",
         }}
       >
-        <PostStats
-          views={9}
-          likes={8}
-          dislikes={9}
-          postViews={4}
-          totalComments={32}
-          readingTime={5}
-          totalReactions={43}
-          reactionRatio={643}
-          createdAt={43}
-        />
+        {/* Posts stats */}
       </div>
       <div className="container px-4 mx-auto">
         <div className="mx-auto md:max-w-3xl">
@@ -124,11 +111,10 @@ const PostDetailsTemplate = () => {
           </h3>
 
           {/* Comment form */}
-          <AddComment />
         </div>
       </div>
     </section>
   );
 };
 
-export default PostDetailsTemplate;
+export default PostDetails;
