@@ -30,6 +30,29 @@ export const fetchPublicPostsAction = createAsyncThunk(
   }
 );
 
+//Fetch private posts
+export const fetchPrivatePostsAction = createAsyncThunk(
+  "posts/fetch-private-posts",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(
+        "http://localhost:9080/api/v1/posts",
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Fetch single post
 export const getPostAction = createAsyncThunk(
   "posts/get-post",
@@ -110,6 +133,22 @@ const publicPostSlice = createSlice({
     });
     //* Handle the rejection
     builder.addCase(getPostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //fetch priavte posts
+    builder.addCase(fetchPrivatePostsAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    //handle fulfilled state
+    builder.addCase(fetchPrivatePostsAction.fulfilled, (state, action) => {
+      state.posts = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    //* Handle the rejection
+    builder.addCase(fetchPrivatePostsAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });
