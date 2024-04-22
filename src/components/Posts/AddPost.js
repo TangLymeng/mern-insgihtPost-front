@@ -6,6 +6,7 @@ import { addPostAction } from "../../redux/slices/posts/postsSlice";
 import LoadingComponent from "../Alert/Loadingcomponent";
 import ErrorComponent from "../Alert/ErrorMsg";
 import SuccessComponent from "../Alert/SuccessMsg";
+
 const AddPost = () => {
   //fetch categories
   const dispatch = useDispatch();
