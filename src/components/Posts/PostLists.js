@@ -52,14 +52,15 @@ const PostLists = () => {
               ) : (
                 posts?.posts?.map((post) => {
                   return (
-                    <div className="w-full md:w-1/2 px-4 mb-8">
+                    <div className="w-full md:w-1/2 px-4 mb-8" key={post._id}>
                       <a
                         className="block mb-6 overflow-hidden rounded-md"
                         href="#"
                       >
                         <img
-                          className="w-full"
-                          src="https://cdn.pixabay.com/photo/2017/11/27/21/31/computer-2982270_960_720.jpg"
+                          className="w-full h-80 object-cover"
+                          alt="post image"
+                          src={post?.image}
                         />
                       </a>
                       <div className="mb-4">
@@ -71,15 +72,22 @@ const PostLists = () => {
                         </a>
                       </div>
                       <p className="mb-2 text-coolGray-500 font-medium">
-                        {post?.createdAt}
+                        {new Date(post?.createdAt).toDateString()}
                       </p>
-                      <a
+                      <Link
                         className="inline-block mb-4 text-2xl md:text-3xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline"
                         href="#"
+                        to={`/posts/${post?._id}`}
                       >
                         {post?.title}
-                      </a>
-                      <p className="mb-4 text-coolGray-500">{post?.content}</p>
+                      </Link>
+                      <div
+                        className="mb-10 text-lg line-clamp-6 font-medium md:text-xl text-coolGray-500"
+                        style={{ wordWrap: "break-word" }} // Add this style
+                        dangerouslySetInnerHTML={{
+                          __html: post?.content,
+                        }}
+                      ></div>
                       <Link
                         className="inline-flex items-center text-base md:text-lg text-green-500 hover:text-green-600 font-semibold"
                         to={`/posts/${post?._id}`}

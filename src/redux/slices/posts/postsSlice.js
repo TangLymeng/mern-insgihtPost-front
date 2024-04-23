@@ -180,7 +180,6 @@ const publicPostSlice = createSlice({
     //handle fulfilled state
     builder.addCase(addPostAction.fulfilled, (state, action) => {
       state.post = action.payload;
-      state.success = true;
       state.loading = false;
       state.error = null;
     });

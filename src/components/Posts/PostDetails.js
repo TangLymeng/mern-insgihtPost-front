@@ -35,7 +35,7 @@ const PostDetails = () => {
 
   const isCreator = creator === loginUser;
 
-    console.log({
+  console.log({
     creator,
     loginUser,
   });
@@ -73,15 +73,12 @@ const PostDetails = () => {
                 </p>
                 <span className="mx-1 text-green-500">•</span>
                 <p className="inline-block font-medium text-green-500">
-                  19 Jan 2022
+                  {new Date(post?.post?.createdAt).toDateString()}
                 </p>
               </div>
               <h2 className="mb-4 text-3xl font-bold leading-tight tracking-tighter md:text-5xl text-darkCoolGray-900">
                 {post?.post?.title}
               </h2>
-              <p className="mb-10 text-lg font-medium md:text-xl text-coolGray-500">
-                {post?.post?.content}
-              </p>
               <div className="flex items-center justify-center -mx-2 text-left">
                 <div className="w-auto px-2">
                   <img
@@ -102,7 +99,7 @@ const PostDetails = () => {
             </div>
           </div>
           <img
-            className="w-full mx-auto mb-4 mb-10"
+            className="w-full mx-auto mb-4 mb-10 max-w-4xl"
             src={post?.post?.image}
             alt="post image"
           />
@@ -128,9 +125,12 @@ const PostDetails = () => {
           </div>
           <div className="container px-4 mx-auto">
             <div className="mx-auto md:max-w-3xl">
-              <p className="pb-10 mb-8 text-lg font-medium border-b md:text-xl text-coolGray-500 border-coolGray-100">
-                {post?.post?.content}
-              </p>
+              <div
+                className="mb-10 text-lg font-medium md:text-xl text-coolGray-500"
+                style={{ wordWrap: "break-word" }} // Add this style
+                dangerouslySetInnerHTML={{ __html: post?.post?.content }}
+              ></div>
+
               {isCreator && (
                 <div className="flex justify-end mb-4">
                   <button className="p-2 mr-2 text-gray-500 hover:text-gray-700">

@@ -6,6 +6,8 @@ import { addPostAction } from "../../redux/slices/posts/postsSlice";
 import LoadingComponent from "../Alert/Loadingcomponent";
 import ErrorComponent from "../Alert/ErrorMsg";
 import SuccessComponent from "../Alert/SuccessMsg";
+import ReactQuill from 'react-quill';
+import 'react-quill/dist/quill.snow.css';
 
 const AddPost = () => {
   //fetch categories
@@ -51,13 +53,16 @@ const AddPost = () => {
 
   //2. HandleBlur
   const handleBlur = (e) => {
-    const { name } = e.target;
-    const formErrors = validateForm(formData);
-    setErrors({ ...errors, [name]: formErrors[name] });
+    // Check if e exists and if e.target exists
+    if (e && e.target) {
+      const { name } = e.target;
+      const formErrors = validateForm(formData);
+      setErrors({ ...errors, [name]: formErrors[name] });
+    }
   };
 
-  const handleChange = (e) => {
-    setFormData({ ...formData, [e.target.name]: e.target.value });
+  const handleChange = (name, value) => {
+    setFormData({ ...formData, [name]: value });
   };
 
   //! Handle image change
@@ -107,7 +112,7 @@ const AddPost = () => {
               placeholder="Enter the post title"
               name="title"
               value={formData.title}
-              onChange={handleChange}
+              onChange={(e) => handleChange(e.target.name, e.target.value)}
               onBlur={handleBlur}
             />
             {/* error here */}
@@ -141,12 +146,14 @@ const AddPost = () => {
           </label>
           <label className="mb-4 flex flex-col w-full">
             <span className="mb-1 text-coolGray-800 font-medium">Content</span>
-            <textarea
-              className="py-3 px-3 leading-5 w-full text-coolGray-400 font-normal border border-coolGray-200 outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-lg shadow-sm"
+            <ReactQuill
+              theme="snow"
+              
+              className="py-3 px-3 leading-5 w-full text-coolGray-400 font-normal"
               placeholder="Write your post content"
               name="content"
               value={formData.content}
-              onChange={handleChange}
+              onChange={(content) => handleChange("content", content)}
               onBlur={handleBlur}
             />
             {/* error here */}
