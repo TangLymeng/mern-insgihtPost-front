@@ -9,6 +9,7 @@ import ProctectedRoute from "./components/AuthRoute/ProtectedRoute";
 import AddPost from "./components/Posts/AddPost";
 import PostDetails from "./components/Posts/PostDetails";
 import PostLists from "./components/Posts/PostLists";
+import UpdatePost from "./components/Posts/UpdatePost";
 
 export default function App() {
    //! Get the login user from store
@@ -54,6 +55,15 @@ export default function App() {
           element={
             <ProctectedRoute>
               <PostLists />
+            </ProctectedRoute>
+          }
+        ></Route>
+        {/* update */}
+        <Route
+          path="/posts/:postId/update"
+          element={
+            <ProctectedRoute>
+              <UpdatePost />
             </ProctectedRoute>
           }
         ></Route>

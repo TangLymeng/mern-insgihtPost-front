@@ -122,6 +122,38 @@ export const addPostAction = createAsyncThunk(
   }
 );
 
+// ! update post
+export const updatePostAction = createAsyncThunk(
+  "post/update",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      //convert the payload to formdata
+      const formData = new FormData();
+      formData.append("title", payload?.title);
+      formData.append("content", payload?.content);
+      formData.append("category", payload?.category);
+      formData.append("file", payload?.image);
+
+      console.log("Form Data:", formData);
+
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/${payload?.postId}`,
+        formData,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //! Users slices
 const publicPostSlice = createSlice({
   name: "posts",
@@ -142,14 +174,13 @@ const publicPostSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     });
-     //! get single post
-     builder.addCase(getPostAction.pending, (state, action) => {
+    //! get single post
+    builder.addCase(getPostAction.pending, (state, action) => {
       state.loading = true;
     });
     //handle fulfilled state
     builder.addCase(getPostAction.fulfilled, (state, action) => {
       state.post = action.payload;
-      state.success = true;
       state.loading = false;
       state.error = null;
     });
@@ -180,6 +211,7 @@ const publicPostSlice = createSlice({
     //handle fulfilled state
     builder.addCase(addPostAction.fulfilled, (state, action) => {
       state.post = action.payload;
+      state.success = true;
       state.loading = false;
       state.error = null;
     });
@@ -209,6 +241,20 @@ const publicPostSlice = createSlice({
     });
     //* Handle the rejection
     builder.addCase(deletePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //! update post
+    builder.addCase(updatePostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(updatePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(updatePostAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

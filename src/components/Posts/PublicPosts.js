@@ -46,7 +46,7 @@ const PublicPosts = () => {
                         className="block mb-6 overflow-hidden rounded-md"
                         href="#"
                       >
-                        <img className="w-full" src={post?.image} />
+                        <img className="w-full h-80 object-cover" src={post?.image} />
                       </a>
                       <div className="mb-4">
                         <a
@@ -65,7 +65,13 @@ const PublicPosts = () => {
                       >
                         {post?.title}
                       </Link>
-                      <p className="mb-4 text-coolGray-500">{post?.content}</p>
+                      <div
+                        className="mb-10 text-lg line-clamp-3 font-medium md:text-xl text-coolGray-500"
+                        style={{ wordWrap: "break-word" }} // Add this style
+                        dangerouslySetInnerHTML={{
+                          __html: post?.content,
+                        }}
+                      ></div>
                       <Link
                         className="inline-flex items-center text-base md:text-lg text-green-500 hover:text-green-600 font-semibold"
                         to={`/posts/${post?._id}`}

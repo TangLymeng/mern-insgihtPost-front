@@ -82,7 +82,7 @@ const PostLists = () => {
                         {post?.title}
                       </Link>
                       <div
-                        className="mb-10 text-lg line-clamp-6 font-medium md:text-xl text-coolGray-500"
+                        className="mb-10 text-lg line-clamp-3 font-medium md:text-xl text-coolGray-500"
                         style={{ wordWrap: "break-word" }} // Add this style
                         dangerouslySetInnerHTML={{
                           __html: post?.content,

@@ -4,7 +4,7 @@ import {
   getPostAction,
 } from "../../redux/slices/posts/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
-import { useParams, useNavigate } from "react-router-dom";
+import { useParams, useNavigate, Link } from "react-router-dom";
 import LoadingComponent from "../Alert/Loadingcomponent";
 import ErrorMsg from "../Alert/ErrorMsg";
 import PostStats from "./PostStats";
@@ -35,10 +35,10 @@ const PostDetails = () => {
 
   const isCreator = creator === loginUser;
 
-  console.log({
-    creator,
-    loginUser,
-  });
+  // console.log({
+  //   creator,
+  //   loginUser,
+  // });
 
   //! Delete post handler
   const deletePostHandler = () => {
@@ -133,7 +133,10 @@ const PostDetails = () => {
 
               {isCreator && (
                 <div className="flex justify-end mb-4">
-                  <button className="p-2 mr-2 text-gray-500 hover:text-gray-700">
+                  <Link
+                    to={`/posts/${post?.post?._id}/update`}
+                    className="p-2 mr-2 text-gray-500 hover:text-gray-700"
+                  >
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
@@ -148,7 +151,7 @@ const PostDetails = () => {
                         d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10"
                       />
                     </svg>
-                  </button>
+                  </Link>
                   {/* delete */}
                   <button
                     onClick={deletePostHandler}
