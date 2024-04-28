@@ -27,7 +27,7 @@ const PostDetails = () => {
   //dispatch
   useEffect(() => {
     dispatch(getPostAction(postId));
-  }, [dispatch]);
+  }, [dispatch, postId, post?.post?.likes.length, post?.post?.dislikes.length]);
 
   //! Get the creator of the post
   const creator = post?.post?.author?._id?.toString();
@@ -50,9 +50,7 @@ const PostDetails = () => {
   };
   return (
     <>
-      {loading ? (
-        <LoadingComponent />
-      ) : error ? (
+      {error ? (
         <ErrorMsg message={error?.message} />
       ) : (
         <section
