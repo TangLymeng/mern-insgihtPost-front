@@ -154,6 +154,54 @@ export const updatePostAction = createAsyncThunk(
   }
 );
 
+//!like post
+export const likePostAction = createAsyncThunk(
+  "posts/like",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/likes/${postId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//!dislike post
+export const dislikePostAction = createAsyncThunk(
+  "posts/dislike",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/dislikes/${postId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //! Users slices
 const publicPostSlice = createSlice({
   name: "posts",
@@ -255,6 +303,32 @@ const publicPostSlice = createSlice({
       state.error = null;
     });
     builder.addCase(updatePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //! like post
+    builder.addCase(likePostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(likePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(likePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+     //! dislike post
+     builder.addCase(dislikePostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(dislikePostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(dislikePostAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

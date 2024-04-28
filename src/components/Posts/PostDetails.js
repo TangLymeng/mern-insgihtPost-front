@@ -122,6 +122,9 @@ const PostDetails = () => {
               totalComments={post?.post?.comments?.length}
               createdAt={post?.post?.createdAt}
               readingTime={calculateReadingTime(post?.post?.content)}
+              postId={post?.post?._id}
+              claps={post?.post?.claps}
+
             />
           </div>
           <div className="container px-4 mx-auto">
