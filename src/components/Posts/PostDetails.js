@@ -120,7 +120,7 @@ const PostDetails = () => {
               totalComments={post?.post?.comments?.length}
               createdAt={post?.post?.createdAt}
               readingTime={calculateReadingTime(post?.post?.content)}
-              postId={post?.post?._id}
+              postId={postId}
               claps={post?.post?.claps}
 
             />

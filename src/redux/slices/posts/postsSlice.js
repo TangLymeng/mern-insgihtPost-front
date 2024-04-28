@@ -202,6 +202,30 @@ export const dislikePostAction = createAsyncThunk(
   }
 );
 
+//!clap post
+export const clapPostAction = createAsyncThunk(
+  "posts/clap",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/claps/${postId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 //! Users slices
 const publicPostSlice = createSlice({
   name: "posts",
@@ -319,8 +343,8 @@ const publicPostSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     });
-     //! dislike post
-     builder.addCase(dislikePostAction.pending, (state, action) => {
+    //! dislike post
+    builder.addCase(dislikePostAction.pending, (state, action) => {
       state.loading = true;
     });
     builder.addCase(dislikePostAction.fulfilled, (state, action) => {
@@ -329,6 +353,19 @@ const publicPostSlice = createSlice({
       state.error = null;
     });
     builder.addCase(dislikePostAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //! claps post
+    builder.addCase(clapPostAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(clapPostAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(clapPostAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });
