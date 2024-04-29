@@ -41,7 +41,7 @@ const PostLists = () => {
               </h3>
             </div>
 
-            <div className="flex flex-wrap -mx-4 mb-12 md:mb-20">
+            <div className="max-w-[1200px] mx-auto mb-12 md:mb-20">
               {/* loop */}
               {loading ? (
                 <LoadingComponent />

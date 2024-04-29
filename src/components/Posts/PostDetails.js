@@ -180,9 +180,6 @@ const PostDetails = () => {
                   </button>
                 </div>
               )}
-              <h3 className="mb-4 text-2xl font-semibold md:text-3xl text-coolGray-800">
-                Add a comment
-              </h3>
 
               {/* Comment form */}
               <AddComment postId={postId} comments={post?.post?.comments} />
