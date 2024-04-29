@@ -226,8 +226,32 @@ export const clapPostAction = createAsyncThunk(
   }
 );
 
-//! Users slices
-const publicPostSlice = createSlice({
+//!post view count
+export const posViewsCountAction = createAsyncThunk(
+  "posts/post-views",
+  async (postId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `http://localhost:9080/api/v1/posts/${postId}/post-view-count`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//! Post slices
+const postSlice = createSlice({
   name: "posts",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
@@ -369,10 +393,23 @@ const publicPostSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     });
+    //! post view
+    builder.addCase(posViewsCountAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(posViewsCountAction.fulfilled, (state, action) => {
+      state.post = action.payload;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(posViewsCountAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
   },
 });
 
 //! generate reducer
-const postsReducer = publicPostSlice.reducer;
+const postsReducer = postSlice.reducer;
 
 export default postsReducer;

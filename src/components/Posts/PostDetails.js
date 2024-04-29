@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import {
   deletePostAction,
   getPostAction,
+  posViewsCountAction,
 } from "../../redux/slices/posts/postsSlice";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams, useNavigate, Link } from "react-router-dom";
@@ -29,6 +30,10 @@ const PostDetails = () => {
     dispatch(getPostAction(postId));
   }, [dispatch, postId, post?.post?.likes.length, post?.post?.dislikes.length]);
 
+  //! Post view count
+  useEffect(() => {
+    dispatch(posViewsCountAction(postId));
+  }, [dispatch]);
   //! Get the creator of the post
   const creator = post?.post?.author?._id?.toString();
   // //! get the login user
@@ -98,7 +103,7 @@ const PostDetails = () => {
             </div>
           </div>
           <img
-            className="w-full mx-auto mb-4 mb-10 max-w-4xl"
+            className="w-full mx-auto mb-4 max-w-4xl"
             src={post?.post?.image}
             alt="post image"
           />
@@ -122,7 +127,6 @@ const PostDetails = () => {
               readingTime={calculateReadingTime(post?.post?.content)}
               postId={postId}
               claps={post?.post?.claps}
-
             />
           </div>
           <div className="container px-4 mx-auto">
@@ -181,7 +185,7 @@ const PostDetails = () => {
               </h3>
 
               {/* Comment form */}
-              <AddComment />
+              <AddComment postId={postId} comments={post?.post?.comments} />
             </div>
           </div>
         </section>
