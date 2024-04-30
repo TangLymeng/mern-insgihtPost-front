@@ -5,6 +5,8 @@ import {
   resetSuccesAction,
 } from "../globalSlice/globalSlice";
 
+import { getPostAction } from "../posts/postsSlice";
+
 //initialstate
 const INITIAL_STATE = {
   loading: false,
@@ -32,9 +34,10 @@ export const createCommentAction = createAsyncThunk(
         },
         config
       );
-      return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
+    } finally {
+      dispatch(getPostAction(payload?.postId));
     }
   }
 );

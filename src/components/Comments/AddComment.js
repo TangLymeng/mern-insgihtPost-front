@@ -18,14 +18,19 @@ const AddComment = ({ postId, comments }) => {
   const { success } = useSelector((state) => state?.comments);
   //reload
   useEffect(() => {
-    if (success) {
-      window.location.reload();
-    }
+    // if (success) {
+    //   window.location.reload();
+    // }
   }, [dispatch, success]);
 
   const handleSubmit = (e) => {
     e.preventDefault();
+
     dispatch(createCommentAction({ ...formData, postId }));
+
+    setFormData({
+      message: "",
+    });
   };
 
   return (
