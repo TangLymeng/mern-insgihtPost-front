@@ -16,7 +16,6 @@ const AddPost = () => {
   const [errors, setErrors] = useState({});
   //get data from store
   const { categories } = useSelector((state) => state?.categories);
-  console.log(categories?.categories);
 
   const options = categories?.categories?.map((category) => {
     return {
