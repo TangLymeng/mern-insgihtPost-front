@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Homepage from "./components/Homepage/Homepage";
 import Login from "./components/Users/Login";
 import { useSelector } from "react-redux";
-import UserProfile from "./components/Users/UserProfile";
+import PublicUserProfile from "./components/Users/PublicUserProfile";
 import PublicNavbar from "./components/Navbar/PublicNavbar";
 import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 import ProctectedRoute from "./components/AuthRoute/ProtectedRoute";
@@ -12,9 +12,9 @@ import PostLists from "./components/Posts/PostLists";
 import UpdatePost from "./components/Posts/UpdatePost";
 
 export default function App() {
-   //! Get the login user from store
-   const { userAuth } = useSelector((state) => state?.users);
-   const isLogin = userAuth?.userInfo?.token;
+  //! Get the login user from store
+  const { userAuth } = useSelector((state) => state?.users);
+  const isLogin = userAuth?.userInfo?.token;
   return (
     <BrowserRouter>
       {/* Navbar here */}
@@ -24,10 +24,10 @@ export default function App() {
         <Route path="/login" element={<Login />}></Route>
         {/* profile */}
         <Route
-          path="/user-profile"
+          path="/user-public-profile/:userId"
           element={
             <ProctectedRoute>
-              <UserProfile />
+              <PublicUserProfile />
             </ProctectedRoute>
           }
         ></Route>
@@ -40,8 +40,8 @@ export default function App() {
             </ProctectedRoute>
           }
         ></Route>
-         {/* post details */}
-         <Route
+        {/* post details */}
+        <Route
           path="/posts/:postId"
           element={
             <ProctectedRoute>
@@ -49,8 +49,8 @@ export default function App() {
             </ProctectedRoute>
           }
         ></Route>
-         {/* post details */}
-         <Route
+        {/* post details */}
+        <Route
           path="/posts"
           element={
             <ProctectedRoute>

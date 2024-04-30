@@ -83,7 +83,10 @@ const PostDetails = () => {
               <h2 className="mb-4 text-3xl font-bold leading-tight tracking-tighter md:text-5xl text-darkCoolGray-900">
                 {post?.post?.title}
               </h2>
-              <div className="flex items-center justify-center -mx-2 text-left">
+              <Link
+                to={`/user-public-profile/${post?.post?.author?._id}`}
+                className="flex items-center justify-center -mx-2 text-left"
+              >
                 <div className="w-auto px-2">
                   <img
                     className="w-12 h-12 rounded-full"
@@ -93,13 +96,10 @@ const PostDetails = () => {
                 </div>
                 <div className="w-auto px-2">
                   <h4 className="text-base font-bold md:text-lg text-coolGray-800">
-                    John Doe
+                    {post?.post?.author?.username}
                   </h4>
-                  <p className="text-base md:text-lg text-coolGray-500">
-                    12 October 2021
-                  </p>
                 </div>
-              </div>
+              </Link>
             </div>
           </div>
           <img

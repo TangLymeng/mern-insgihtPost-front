@@ -65,6 +65,29 @@ export const logoutAction = createAsyncThunk("users/logout", async () => {
   return true;
 });
 
+//! Get User Public Profile Action
+export const userPublicProfileAction = createAsyncThunk(
+  "users/user-public-profile",
+  async (userId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(
+        `http://localhost:9080/api/v1/users/public-profile/${userId}`,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Users slices
 const usersSlice = createSlice({
   name: "users",
@@ -109,6 +132,20 @@ const usersSlice = createSlice({
     //! Reset success action
     builder.addCase(resetSuccesAction.fulfilled, (state) => {
       state.success = false;
+    });
+    //get user public profile
+    builder.addCase(userPublicProfileAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(userPublicProfileAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(userPublicProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
     });
   },
 });
