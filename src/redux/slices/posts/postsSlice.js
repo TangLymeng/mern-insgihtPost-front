@@ -144,7 +144,7 @@ export const updatePostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `${BASE_URL}/${payload?.postId}`,
+        `${BASE_URL}/posts/${payload?.postId}`,
         formData,
         config
       );
@@ -168,7 +168,7 @@ export const likePostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `${BASE_URL}/likes/${postId}`,
+        `${BASE_URL}/posts/likes/${postId}`,
         {},
         config
       );
@@ -192,7 +192,7 @@ export const dislikePostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `${BASE_URL}/dislikes/${postId}`,
+        `${BASE_URL}/posts/dislikes/${postId}`,
         {},
         config
       );
@@ -216,7 +216,7 @@ export const clapPostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `${BASE_URL}/claps/${postId}`,
+        `${BASE_URL}/posts/claps/${postId}`,
         {},
         config
       );
@@ -240,7 +240,7 @@ export const posViewsCountAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `${BASE_URL}/${postId}/post-view-count`,
+        `${BASE_URL}/posts/${postId}/post-view-count`,
         {},
         config
       );

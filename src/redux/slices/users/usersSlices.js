@@ -22,6 +22,54 @@ const INITIAL_STATE = {
   },
 };
 
+//! Block User Action
+export const blockUserAction = createAsyncThunk(
+  "users/block-user",
+  async (userId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${BASE_URL}/users/block/${userId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+//! UnBlock User Action
+export const unBlockUserAction = createAsyncThunk(
+  "users/unblock-user",
+  async (userId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.put(
+        `${BASE_URL}/users/unblock/${userId}`,
+        {},
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Login Action
 
 export const loginAction = createAsyncThunk(
@@ -29,10 +77,7 @@ export const loginAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     //make request
     try {
-      const { data } = await axios.post(
-        `${BASE_URL}/users/login`,
-        payload
-      );
+      const { data } = await axios.post(`${BASE_URL}/users/login`, payload);
       //! save the user into localstorage
       localStorage.setItem("userInfo", JSON.stringify(data));
       return data;
@@ -48,10 +93,7 @@ export const registerAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     //make request
     try {
-      const { data } = await axios.post(
-        `${BASE_URL}/users/register`,
-        payload
-      );
+      const { data } = await axios.post(`${BASE_URL}/users/register`, payload);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -89,11 +131,74 @@ export const userPublicProfileAction = createAsyncThunk(
   }
 );
 
+//! Get User  Profile Action
+export const userPrivateProfileAction = createAsyncThunk(
+  "users/user-private-profile",
+  async (userId, { rejectWithValue, getState, dispatch }) => {
+    //make request
+    try {
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.get(`${BASE_URL}users/profile/`, config);
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Users slices
 const usersSlice = createSlice({
   name: "users",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
+    //block user
+    builder.addCase(blockUserAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(blockUserAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(blockUserAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //unblock user
+    builder.addCase(unBlockUserAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(unBlockUserAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(unBlockUserAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+
+    //get user private profile
+    builder.addCase(userPrivateProfileAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(userPrivateProfileAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(userPrivateProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
     //Login
     builder.addCase(loginAction.pending, (state, action) => {
       state.loading = true;
@@ -139,7 +244,7 @@ const usersSlice = createSlice({
       state.loading = true;
     });
     builder.addCase(userPublicProfileAction.fulfilled, (state, action) => {
-      state.profile = action.payload;
+      state.user = action.payload;
       state.success = true;
       state.loading = false;
       state.error = null;

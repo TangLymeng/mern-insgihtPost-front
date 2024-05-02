@@ -1,7 +1,12 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router-dom";
-import { userPublicProfileAction } from "../../redux/slices/users/usersSlices";
+import {
+  userPublicProfileAction,
+  userPrivateProfileAction,
+  blockUserAction,
+  unBlockUserAction,
+} from "../../redux/slices/users/usersSlices";
 import UserPosts from "../Posts/UserPosts";
 
 export default function PublicUserProfile() {
@@ -12,7 +17,18 @@ export default function PublicUserProfile() {
   useEffect(() => {
     dispatch(userPublicProfileAction(userId));
   }, [userId, dispatch]);
-  const { profile, loading, error } = useSelector((state) => state?.users);
+  // get user private profile
+  useEffect(() => {
+    dispatch(userPrivateProfileAction());
+  }, [userId, dispatch]);
+  const { user, loading, error } = useSelector((state) => state?.users);
+   //Block user handler
+  const blockUserHandler = () => {
+    dispatch(blockUserAction(userId));
+  };
+  const unBlockUserHandler = () => {
+    dispatch(unBlockUserAction(userId));
+  };
   return (
     <>
       <div className="flex h-full">
@@ -20,7 +36,7 @@ export default function PublicUserProfile() {
           <div className="relative z-0 flex flex-1 overflow-hidden">
             <main className="relative z-0 flex-1 overflow-y-auto focus:outline-none xl:order-last">
               <article>
-                {/* Profile header */}
+                {/* User header */}
                 <div>
                   <div>
                     <img
@@ -29,7 +45,6 @@ export default function PublicUserProfile() {
                       alt=""
                     />
                   </div>
-
                   <div className="mx-auto max-w-5xl px-4 sm:px-6 lg:px-8">
                     <div className="-mt-12 sm:-mt-16 sm:flex sm:items-end sm:space-x-5">
                       <div className="flex">
@@ -42,7 +57,7 @@ export default function PublicUserProfile() {
                       <div className="mt-6 sm:flex sm:min-w-0 sm:flex-1 sm:items-center sm:justify-end sm:space-x-6 sm:pb-1">
                         <div className="mt-6 min-w-0 flex-1 sm:hidden 2xl:block">
                           <h1 className="truncate text-2xl font-bold text-gray-900">
-                            {profile.user?.username}
+                            {user?.username}
                           </h1>
                         </div>
                         <div className="justify-stretch mt-6 flex flex-col space-y-3 sm:flex-row sm:space-y-0 sm:space-x-4">
@@ -76,6 +91,7 @@ export default function PublicUserProfile() {
                           {/* unblock */}
                           <button
                             type="button"
+                            onClick={unBlockUserHandler}
                             className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                           >
                             <svg
@@ -98,6 +114,7 @@ export default function PublicUserProfile() {
                           {/* Block */}
                           <button
                             type="button"
+                            onClick={blockUserHandler}
                             className="inline-flex justify-center gap-x-1.5 rounded-md bg-white px-3 py-2 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
                           >
                             <svg
@@ -167,7 +184,7 @@ export default function PublicUserProfile() {
                     </div>
                     <div className="mt-6 hidden min-w-0 flex-1 sm:block 2xl:hidden">
                       <h1 className="truncate text-2xl font-bold text-gray-900">
-                        {profile.name}
+                        {user?.name}
                       </h1>
                     </div>
                   </div>
@@ -181,7 +198,7 @@ export default function PublicUserProfile() {
                         Email
                       </dt>
                       <dd className="mt-1 text-sm text-gray-900">
-                        {profile?.user?.email}
+                        {user?.user?.email}
                       </dd>
                     </div>
                   </dl>
@@ -191,9 +208,8 @@ export default function PublicUserProfile() {
           </div>
         </div>
       </div>
-      
-      <UserPosts posts={profile?.user?.posts} />
 
+      <UserPosts posts={user?.user?.posts} />
     </>
   );
 }
