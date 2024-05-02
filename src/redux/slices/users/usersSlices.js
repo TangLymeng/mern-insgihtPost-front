@@ -5,6 +5,7 @@ import {
   resetSuccesAction,
 } from "../globalSlice/globalSlice";
 //initialstate
+import BASE_URL from "../../../utils/baseURL";
 
 const INITIAL_STATE = {
   loading: false,
@@ -29,7 +30,7 @@ export const loginAction = createAsyncThunk(
     //make request
     try {
       const { data } = await axios.post(
-        "http://localhost:9080/api/v1/users/login",
+        `${BASE_URL}/users/login`,
         payload
       );
       //! save the user into localstorage
@@ -48,7 +49,7 @@ export const registerAction = createAsyncThunk(
     //make request
     try {
       const { data } = await axios.post(
-        "http://localhost:9080/api/v1/users/register",
+        `${BASE_URL}/users/register`,
         payload
       );
       return data;
@@ -78,7 +79,7 @@ export const userPublicProfileAction = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `http://localhost:9080/api/v1/users/public-profile/${userId}`,
+        `${BASE_URL}/users/public-profile/${userId}`,
         config
       );
       return data;
