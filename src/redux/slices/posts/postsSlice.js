@@ -4,6 +4,7 @@ import {
   resetErrorAction,
   resetSuccesAction,
 } from "../globalSlice/globalSlice";
+import BASE_URL from "../../../utils/baseURL";
 
 //initialstate
 const INITIAL_STATE = {
@@ -21,7 +22,7 @@ export const fetchPublicPostsAction = createAsyncThunk(
     //make request
     try {
       const { data } = await axios.get(
-        "http://localhost:9080/api/v1/posts/public"
+        `${BASE_URL}/posts/public`
       );
       return data;
     } catch (error) {
@@ -43,7 +44,7 @@ export const fetchPrivatePostsAction = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        "http://localhost:9080/api/v1/posts",
+        `${BASE_URL}/posts`,
         config
       );
       return data;
@@ -66,7 +67,7 @@ export const deletePostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.delete(
-        `http://localhost:9080/api/v1/posts/${postId}`,
+        `${BASE_URL}/posts/${postId}`,
         config
       );
       return data;
@@ -83,7 +84,7 @@ export const getPostAction = createAsyncThunk(
     //make request
     try {
       const { data } = await axios.get(
-        `http://localhost:9080/api/v1/posts/${postId}`
+        `${BASE_URL}/posts/${postId}`
       );
       return data;
     } catch (error) {
@@ -111,7 +112,7 @@ export const addPostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.post(
-        "http://localhost:9080/api/v1/posts",
+        `${BASE_URL}/posts`,
         formData,
         config
       );
@@ -143,7 +144,7 @@ export const updatePostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `http://localhost:9080/api/v1/posts/${payload?.postId}`,
+        `${BASE_URL}/${payload?.postId}`,
         formData,
         config
       );
@@ -167,7 +168,7 @@ export const likePostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `http://localhost:9080/api/v1/posts/likes/${postId}`,
+        `${BASE_URL}/likes/${postId}`,
         {},
         config
       );
@@ -191,7 +192,7 @@ export const dislikePostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `http://localhost:9080/api/v1/posts/dislikes/${postId}`,
+        `${BASE_URL}/dislikes/${postId}`,
         {},
         config
       );
@@ -215,7 +216,7 @@ export const clapPostAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `http://localhost:9080/api/v1/posts/claps/${postId}`,
+        `${BASE_URL}/claps/${postId}`,
         {},
         config
       );
@@ -239,7 +240,7 @@ export const posViewsCountAction = createAsyncThunk(
         },
       };
       const { data } = await axios.put(
-        `http://localhost:9080/api/v1/posts/${postId}/post-view-count`,
+        `${BASE_URL}/${postId}/post-view-count`,
         {},
         config
       );

@@ -41,10 +41,12 @@ const PostLists = () => {
               </h3>
             </div>
 
-            <div className="max-w-[1200px] mx-auto mb-12 md:mb-20">
+            <div className="flex flex-wrap -mx-4 mb-12 md:mb-20">
               {/* loop */}
               {loading ? (
-                <LoadingComponent />
+                <div className="w-full flex justify-center">
+                  <LoadingComponent />
+                </div>
               ) : error ? (
                 <h3 className="text-red-500 text-center">{error?.message}</h3>
               ) : posts?.post?.length <= 0 ? (
@@ -53,6 +55,7 @@ const PostLists = () => {
                 posts?.posts?.map((post) => {
                   return (
                     <div className="w-full md:w-1/2 px-4 mb-8" key={post._id}>
+                      {/* Your post item JSX */}
                       <a
                         className="block mb-6 overflow-hidden rounded-md"
                         href="#"
