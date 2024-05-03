@@ -4,8 +4,6 @@ import { useParams } from "react-router-dom";
 import {
   userPublicProfileAction,
   userPrivateProfileAction,
-  blockUserAction,
-  unBlockUserAction,
 } from "../../redux/slices/users/usersSlices";
 import UserPosts from "../Posts/UserPosts";
 
@@ -22,13 +20,7 @@ export default function PublicUserProfile() {
     dispatch(userPrivateProfileAction());
   }, [userId, dispatch]);
   const { user, loading, error } = useSelector((state) => state?.users);
-   //Block user handler
-  const blockUserHandler = () => {
-    dispatch(blockUserAction(userId));
-  };
-  const unBlockUserHandler = () => {
-    dispatch(unBlockUserAction(userId));
-  };
+
   return (
     <>
       <div className="flex h-full">
@@ -88,7 +80,7 @@ export default function PublicUserProfile() {
                             </svg>
                             20
                           </button>
-                          {/* unblock */}
+                           {/* unblock
                           <button
                             type="button"
                             onClick={unBlockUserHandler}
@@ -111,7 +103,7 @@ export default function PublicUserProfile() {
                             </svg>
                             Unblock
                           </button>
-                          {/* Block */}
+                           Block
                           <button
                             type="button"
                             onClick={blockUserHandler}
@@ -133,7 +125,7 @@ export default function PublicUserProfile() {
                               />
                             </svg>
                             Block
-                          </button>
+                          </button> */}
 
                           {/* follow */}
                           <button

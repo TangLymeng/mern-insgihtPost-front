@@ -22,54 +22,6 @@ const INITIAL_STATE = {
   },
 };
 
-//! Block User Action
-export const blockUserAction = createAsyncThunk(
-  "users/block-user",
-  async (userId, { rejectWithValue, getState, dispatch }) => {
-    //make request
-    try {
-      const token = getState().users?.userAuth?.userInfo?.token;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const { data } = await axios.put(
-        `${BASE_URL}/users/block/${userId}`,
-        {},
-        config
-      );
-      return data;
-    } catch (error) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
-//! UnBlock User Action
-export const unBlockUserAction = createAsyncThunk(
-  "users/unblock-user",
-  async (userId, { rejectWithValue, getState, dispatch }) => {
-    //make request
-    try {
-      const token = getState().users?.userAuth?.userInfo?.token;
-      const config = {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
-      };
-      const { data } = await axios.put(
-        `${BASE_URL}/users/unblock/${userId}`,
-        {},
-        config
-      );
-      return data;
-    } catch (error) {
-      return rejectWithValue(error?.response?.data);
-    }
-  }
-);
-
 // Login Action
 
 export const loginAction = createAsyncThunk(
@@ -156,34 +108,6 @@ const usersSlice = createSlice({
   name: "users",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
-    //block user
-    builder.addCase(blockUserAction.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(blockUserAction.fulfilled, (state, action) => {
-      state.profile = action.payload;
-      state.success = true;
-      state.loading = false;
-      state.error = null;
-    });
-    builder.addCase(blockUserAction.rejected, (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-    });
-    //unblock user
-    builder.addCase(unBlockUserAction.pending, (state, action) => {
-      state.loading = true;
-    });
-    builder.addCase(unBlockUserAction.fulfilled, (state, action) => {
-      state.profile = action.payload;
-      state.success = true;
-      state.loading = false;
-      state.error = null;
-    });
-    builder.addCase(unBlockUserAction.rejected, (state, action) => {
-      state.error = action.payload;
-      state.loading = false;
-    });
 
     //get user private profile
     builder.addCase(userPrivateProfileAction.pending, (state, action) => {
