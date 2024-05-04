@@ -14,7 +14,7 @@ const Homepage = () => {
       >
         <div className="bg-transparent">
           <div className="navbar-menu hidden fixed top-0 left-0 z-50 w-full h-full bg-coolGray-900 bg-opacity-50">
-            <div className="fixed top-0 left-0 bottom-0 w-full w-4/6 max-w-xs bg-white">
+            <div className="fixed top-0 left-0 bottom-0 w-full max-w-xs bg-white">
               <a className="navbar-close absolute top-5 p-4 right-3" href="#">
                 <svg
                   width={12}
