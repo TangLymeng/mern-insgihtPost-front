@@ -80,6 +80,7 @@ const AddPost = () => {
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
       dispatch(addPostAction(formData));
+      console.log(errors);
       e.preventDefault();
       setFormData({
         title: "",
