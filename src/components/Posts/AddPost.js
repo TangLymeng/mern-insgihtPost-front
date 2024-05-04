@@ -73,14 +73,13 @@ const AddPost = () => {
   const handleSelectChange = (selectedOption) => {
     setFormData({ ...formData, category: selectedOption.value });
   };
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    //dispatch action
-    const errors = validateForm(formData);
+    try{
+      const errors = validateForm(formData);
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      const repsone = dispatch(addPostAction(formData));
-      console.log(repsone);
+      dispatch(addPostAction(formData));
       e.preventDefault();
       setFormData({
         title: "",
@@ -89,6 +88,12 @@ const AddPost = () => {
         content: "",
       });
     }
+
+    } catch (error) {
+      console.log(error);
+    }
+    //dispatch action
+    
   };
 
   return (
