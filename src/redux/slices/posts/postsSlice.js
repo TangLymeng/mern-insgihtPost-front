@@ -111,7 +111,7 @@ export const addPostAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.post(
+      const data = await axios.post(
         `${BASE_URL}/posts`,
         formData,
         config
