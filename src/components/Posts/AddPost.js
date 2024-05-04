@@ -79,7 +79,8 @@ const AddPost = () => {
     const errors = validateForm(formData);
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      dispatch(addPostAction(formData));
+      const repsone = dispatch(addPostAction(formData));
+      console.log(repsone);
       e.preventDefault();
       setFormData({
         title: "",
