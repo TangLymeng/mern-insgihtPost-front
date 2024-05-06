@@ -73,27 +73,20 @@ const AddPost = () => {
   const handleSelectChange = (selectedOption) => {
     setFormData({ ...formData, category: selectedOption.value });
   };
-  const handleSubmit = async (e) => {
+  const handleSubmit =  (e) => {
     e.preventDefault();
-    try{
       const errors = validateForm(formData);
-    setErrors(errors);
-    if (Object.keys(errors).length === 0) {
-      dispatch(addPostAction(formData));
-      e.preventDefault();
-      setFormData({
-        title: "",
-        image: null,
-        category: null,
-        content: "",
-      });
-    }
-
-    } catch (error) {
-      console.log(error);
-    }
-    //dispatch action
-    
+      setErrors(errors);
+      if (Object.keys(errors).length === 0) {
+        dispatch(addPostAction(formData));
+        e.preventDefault();
+        setFormData({
+          title: "",
+          image: null,
+          category: null,
+          content: "",
+        });
+      }
   };
 
   return (
@@ -123,7 +116,6 @@ const AddPost = () => {
             {/* error here */}
             {errors?.title && <p className="text-red-500 ">{errors.title}</p>}
           </label>
-        
 
           <label className="mb-4 flex flex-col w-full">
             <span className="mb-1 text-coolGray-800 font-medium">Image</span>
@@ -135,7 +127,7 @@ const AddPost = () => {
               onBlur={handleBlur}
             />
             {/* error here  */}
-            {errors?.image && <p className="text-red-500 ">{errors.image}</p>} 
+            {errors?.image && <p className="text-red-500 ">{errors.image}</p>}
           </label>
           {/* category here */}
           <label className="mb-4 flex flex-col w-full">
