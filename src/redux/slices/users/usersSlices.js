@@ -103,12 +103,64 @@ export const userPrivateProfileAction = createAsyncThunk(
   }
 );
 
+// ! upload cover image
+export const uploadCoverImageAction = createAsyncThunk(
+  "users/upload-cover-image",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      //convert the payload to formdata
+      const formData = new FormData();
+      formData.append("file", payload?.image);
+
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.post(
+        `${BASE_URL}users/api/v1/upload-cover-image`,
+        formData,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+// ! upload profile image
+export const uploadProfileImageAction = createAsyncThunk(
+  "users/upload-profile-image",
+  async (payload, { rejectWithValue, getState, dispatch }) => {
+    try {
+      //convert the payload to formdata
+      const formData = new FormData();
+      formData.append("file", payload?.image);
+      const token = getState().users?.userAuth?.userInfo?.token;
+      const config = {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      };
+      const { data } = await axios.post(
+        "http://localhost:9080/api/v1/users/upload-profile-image",
+        formData,
+        config
+      );
+      return data;
+    } catch (error) {
+      return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
 // Users slices
 const usersSlice = createSlice({
   name: "users",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
-
     //get user private profile
     builder.addCase(userPrivateProfileAction.pending, (state, action) => {
       state.loading = true;
@@ -174,6 +226,34 @@ const usersSlice = createSlice({
       state.error = null;
     });
     builder.addCase(userPublicProfileAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //upload user profile image
+    builder.addCase(uploadProfileImageAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(uploadProfileImageAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(uploadProfileImageAction.rejected, (state, action) => {
+      state.error = action.payload;
+      state.loading = false;
+    });
+    //! upload user cover image
+    builder.addCase(uploadCoverImageAction.pending, (state, action) => {
+      state.loading = true;
+    });
+    builder.addCase(uploadCoverImageAction.fulfilled, (state, action) => {
+      state.profile = action.payload;
+      state.success = true;
+      state.loading = false;
+      state.error = null;
+    });
+    builder.addCase(uploadCoverImageAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
     });

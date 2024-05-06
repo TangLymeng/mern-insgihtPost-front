@@ -3,6 +3,7 @@ import Homepage from "./components/Homepage/Homepage";
 import Login from "./components/Users/Login";
 import { useSelector } from "react-redux";
 import PublicUserProfile from "./components/Users/PublicUserProfile";
+import PrivateUserProfile from "./components/Users/PrivateUserProfile";
 import PublicNavbar from "./components/Navbar/PublicNavbar";
 import PrivateNavbar from "./components/Navbar/PrivateNavbar";
 import ProctectedRoute from "./components/AuthRoute/ProtectedRoute";
@@ -28,6 +29,15 @@ export default function App() {
           element={
             <ProctectedRoute>
               <PublicUserProfile />
+            </ProctectedRoute>
+          }
+        ></Route>
+        {/* private user profile */}
+        <Route
+          path="/user-profile"
+          element={
+            <ProctectedRoute>
+              <PrivateUserProfile />
             </ProctectedRoute>
           }
         ></Route>
