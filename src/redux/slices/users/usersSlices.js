@@ -4,7 +4,6 @@ import {
   resetErrorAction,
   resetSuccesAction,
 } from "../globalSlice/globalSlice";
-//initialstate
 import BASE_URL from "../../../utils/baseURL";
 
 const INITIAL_STATE = {
@@ -13,6 +12,8 @@ const INITIAL_STATE = {
   users: [],
   user: null,
   success: false,
+  isCoverImageUploaded: false,
+  isProfileImageUploaded: false,
   profile: {},
   userAuth: {
     error: null,
@@ -95,7 +96,7 @@ export const userPrivateProfileAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.get(`${BASE_URL}users/profile/`, config);
+      const { data } = await axios.get(`${BASE_URL}/users/profile/`, config);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -118,8 +119,8 @@ export const uploadCoverImageAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.post(
-        `${BASE_URL}users/api/v1/upload-cover-image`,
+      const { data } = await axios.put(
+        `${BASE_URL}/users/upload-cover-image`,
         formData,
         config
       );
@@ -144,8 +145,8 @@ export const uploadProfileImageAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const { data } = await axios.post(
-        "http://localhost:9080/api/v1/users/upload-profile-image",
+      const { data } = await axios.put(
+        `${BASE_URL}/users/upload-profile-image`,
         formData,
         config
       );
@@ -207,20 +208,12 @@ const usersSlice = createSlice({
       state.error = action.payload;
       state.loading = false;
     });
-    //! Reset error action
-    builder.addCase(resetErrorAction.fulfilled, (state) => {
-      state.error = null;
-    });
-    //! Reset success action
-    builder.addCase(resetSuccesAction.fulfilled, (state) => {
-      state.success = false;
-    });
     //get user public profile
     builder.addCase(userPublicProfileAction.pending, (state, action) => {
       state.loading = true;
     });
     builder.addCase(userPublicProfileAction.fulfilled, (state, action) => {
-      state.user = action.payload;
+      state.profile = action.payload;
       state.success = true;
       state.loading = false;
       state.error = null;
@@ -235,13 +228,14 @@ const usersSlice = createSlice({
     });
     builder.addCase(uploadProfileImageAction.fulfilled, (state, action) => {
       state.profile = action.payload;
-      state.success = true;
       state.loading = false;
       state.error = null;
+      state.isProfileImageUploaded = true;
     });
     builder.addCase(uploadProfileImageAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
+      state.isCoverImageUploaded = false;
     });
     //! upload user cover image
     builder.addCase(uploadCoverImageAction.pending, (state, action) => {
@@ -249,13 +243,22 @@ const usersSlice = createSlice({
     });
     builder.addCase(uploadCoverImageAction.fulfilled, (state, action) => {
       state.profile = action.payload;
-      state.success = true;
+      state.isCoverImageUploaded = true;
       state.loading = false;
       state.error = null;
     });
     builder.addCase(uploadCoverImageAction.rejected, (state, action) => {
       state.error = action.payload;
       state.loading = false;
+      state.isCoverImageUploaded = false;
+    });
+    //! Reset error action
+    builder.addCase(resetErrorAction.fulfilled, (state) => {
+      state.error = null;
+    });
+    //! Reset success action
+    builder.addCase(resetSuccesAction.fulfilled, (state) => {
+      state.success = false;
     });
   },
 });

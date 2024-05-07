@@ -2,10 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import LoadingComponent from "../Alert/Loadingcomponent";
 import ErrorMsg from "../Alert/ErrorMsg";
-import SuccessMsg from "../Alert/SuccessMsg";
-import { uploadProfileImageAction } from "../../redux/slices/users/usersSlices";
+import SuccesMsg from "../Alert/SuccessMsg";
+import { uploadCoverImageAction } from "../../redux/slices/users/usersSlices";
 
-const UploadProfileImage = () => {
+const UploadCoverImage = () => {
   //fetch categories
   const dispatch = useDispatch();
   //! Error state
@@ -16,10 +16,9 @@ const UploadProfileImage = () => {
   const [formData, setFormData] = useState({
     image: null,
   });
-
-  const { isProfileImageUploaded, loading, error } = useSelector(
+  const { isCoverImageUploaded, loading, error } = useSelector(
     (state) => state?.users
-  ); //1. Validate form  //1. Validate form
+  ); //1. Validate form
   const validateForm = (data) => {
     let errors = {};
 
@@ -45,7 +44,8 @@ const UploadProfileImage = () => {
     const errors = validateForm(formData);
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      dispatch(uploadProfileImageAction(formData));
+      dispatch(uploadCoverImageAction(formData));
+      e.preventDefault();
     }
   };
 
@@ -54,15 +54,15 @@ const UploadProfileImage = () => {
       <form onSubmit={handleSubmit} className="w-full lg:w-1/2">
         <div className="flex flex-col items-center p-10 xl:px-24 xl:pb-12 bg-white lg:max-w-xl lg:ml-auto rounded-4xl shadow-2xl">
           <h2 className="mb-4 text-2xl md:text-3xl text-coolGray-900 font-bold text-center">
-            Upload Profile Image
+            Upload Cover Image
           </h2>
           {/* error */}
           {error && <ErrorMsg message={error?.message} />}
-          {isProfileImageUploaded && (
-            <SuccessMsg message="Image uploaded successfully" />
+          {isCoverImageUploaded && (
+            <SuccesMsg message="Image uploaded successfully" />
           )}
           <h3 className="mb-7 text-base md:text-lg text-coolGray-500 font-medium text-center">
-            Upload or update Profile Image
+            Upload or update Cover Image
           </h3>
           <label className="mb-4 flex flex-col w-full">
             <span className="mb-1 text-coolGray-800 font-medium">Image</span>
@@ -93,4 +93,4 @@ const UploadProfileImage = () => {
   );
 };
 
-export default UploadProfileImage;
+export default UploadCoverImage;

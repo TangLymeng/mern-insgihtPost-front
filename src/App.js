@@ -11,6 +11,8 @@ import AddPost from "./components/Posts/AddPost";
 import PostDetails from "./components/Posts/PostDetails";
 import PostLists from "./components/Posts/PostLists";
 import UpdatePost from "./components/Posts/UpdatePost";
+import UploadProfileImage from "./components/Users/UploadProfileImage";
+import UploadCoverImage from "./components/Users/UploadCoverImage";
 
 export default function App() {
   //! Get the login user from store
@@ -77,6 +79,26 @@ export default function App() {
             </ProctectedRoute>
           }
         ></Route>
+        {/* private upload prifile image */}
+        <Route
+          path="/upload-profile-image"
+          element={
+            <ProctectedRoute>
+              <UploadProfileImage />
+            </ProctectedRoute>
+          }
+        ></Route>
+
+        {/* private upload cover image */}
+        <Route
+          path="/upload-cover-image"
+          element={
+            <ProctectedRoute>
+              <UploadCoverImage />
+            </ProctectedRoute>
+          }
+        ></Route>
+        
       </Routes>
     </BrowserRouter>
   );

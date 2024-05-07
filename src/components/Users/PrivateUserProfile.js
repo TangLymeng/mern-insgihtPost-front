@@ -1,28 +1,29 @@
 import { AiFillCamera } from "react-icons/ai";
 import { userPrivateProfileAction } from "../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
+import { Link } from "react-router-dom";
 import { useEffect } from "react";
-const profile = {
-  name: "Ricardo Cooper",
-  imageUrl:
-    "https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
-  coverImageUrl:
-    "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
-  about: `
-    <p>Tincidunt quam neque in cursus viverra orci, dapibus nec tristique. Nullam ut sit dolor consectetur urna, dui cras nec sed. Cursus risus congue arcu aenean posuere aliquam.</p>
-    <p>Et vivamus lorem pulvinar nascetur non. Pulvinar a sed platea rhoncus ac mauris amet. Urna, sem pretium sit pretium urna, senectus vitae. Scelerisque fermentum, cursus felis dui suspendisse velit pharetra. Augue et duis cursus maecenas eget quam lectus. Accumsan vitae nascetur pharetra rhoncus praesent dictum risus suspendisse.</p>
-  `,
-  fields: {
-    Phone: "(555) 123-4567",
-    Email: "ricardocooper@example.com",
-    Title: "Senior Front-End Developer",
-    Team: "Product Development",
-    Location: "San Francisco",
-    Sits: "Oasis, 4th floor",
-    Salary: "$145,000",
-    Birthday: "June 8, 1990",
-  },
-};
+// const profile = {
+//   name: "Ricardo Cooper",
+//   imageUrl:
+//     "https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80",
+//   coverImageUrl:
+//     "https://images.unsplash.com/photo-1444628838545-ac4016a5418a?ixid=MXwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHw%3D&ixlib=rb-1.2.1&auto=format&fit=crop&w=1950&q=80",
+//   about: `
+//     <p>Tincidunt quam neque in cursus viverra orci, dapibus nec tristique. Nullam ut sit dolor consectetur urna, dui cras nec sed. Cursus risus congue arcu aenean posuere aliquam.</p>
+//     <p>Et vivamus lorem pulvinar nascetur non. Pulvinar a sed platea rhoncus ac mauris amet. Urna, sem pretium sit pretium urna, senectus vitae. Scelerisque fermentum, cursus felis dui suspendisse velit pharetra. Augue et duis cursus maecenas eget quam lectus. Accumsan vitae nascetur pharetra rhoncus praesent dictum risus suspendisse.</p>
+//   `,
+//   fields: {
+//     Phone: "(555) 123-4567",
+//     Email: "ricardocooper@example.com",
+//     Title: "Senior Front-End Developer",
+//     Team: "Product Development",
+//     Location: "San Francisco",
+//     Sits: "Oasis, 4th floor",
+//     Salary: "$145,000",
+//     Birthday: "June 8, 1990",
+//   },
+// };
 
 export default function PrivateUserProfile() {
   //! Get data from store
@@ -35,6 +36,8 @@ export default function PrivateUserProfile() {
   const { user, loading, error, profile } = useSelector(
     (state) => state?.users
   );
+
+  console.log(profile?.user?.username);
 
   return (
     <>
@@ -49,15 +52,17 @@ export default function PrivateUserProfile() {
                     <div>
                       <img
                         className="object-cover w-full h-32 lg:h-48"
-                        src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                        alt=""
+                        src={profile?.user?.coverImage}
+                        alt={profile?.user?.username}
                       />
 
                       <label
                         htmlFor="coverImageInput"
                         className="cursor-pointer"
                       >
-                        <AiFillCamera className="absolute top-0  right-0 w-6 h-6 m-4 text-gray-200" />
+                        <Link to="/upload-cover-image">
+                          <AiFillCamera className="absolute top-0  right-0 w-6 h-6 m-4 text-gray-200" />
+                        </Link>
                       </label>
                     </div>
                   </div>
@@ -68,14 +73,16 @@ export default function PrivateUserProfile() {
                       <div className="relative flex items-center justify-center">
                         <img
                           className="w-24 h-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src="https://images.unsplash.com/photo-1463453091185-61582044d556?ixlib=rb-=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=facearea&facepad=8&w=1024&h=1024&q=80"
-                          alt=""
+                          src={profile?.user?.profilePicture}
+                          alt={profile?.user?.username}
                         />
                         <label
                           htmlFor="profileImageInput"
                           className="absolute bottom-0 right-0 cursor-pointer"
                         >
-                          <AiFillCamera className="w-6 h-6 m-1 text-gray-500" />
+                          <Link to="/upload-profile-image">
+                            <AiFillCamera className="w-6 h-6 m-1 text-gray-500" />
+                          </Link>
                         </label>
                       </div>
 
@@ -138,7 +145,7 @@ export default function PrivateUserProfile() {
                     </div>
                     <div className="flex-1 hidden min-w-0 mt-6 sm:block 2xl:hidden">
                       <h1 className="text-2xl font-bold text-gray-900 truncate">
-                        {profile.name}
+                        {profile?.user?.username}
                       </h1>
                     </div>
                   </div>
