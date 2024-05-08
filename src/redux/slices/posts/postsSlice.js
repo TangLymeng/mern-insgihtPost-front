@@ -34,7 +34,7 @@ export const fetchPublicPostsAction = createAsyncThunk(
 //Fetch private posts
 export const fetchPrivatePostsAction = createAsyncThunk(
   "posts/fetch-private-posts",
-  async (payload, { rejectWithValue, getState, dispatch }) => {
+  async ({category = ""}, { rejectWithValue, getState, dispatch }) => {
     //make request
     try {
       const token = getState().users?.userAuth?.userInfo?.token;
@@ -44,7 +44,7 @@ export const fetchPrivatePostsAction = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `${BASE_URL}/posts`,
+        `${BASE_URL}/posts?category=${category}`,
         config
       );
       return data;
