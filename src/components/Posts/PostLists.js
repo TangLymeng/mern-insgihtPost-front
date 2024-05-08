@@ -1,11 +1,10 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import {
-  fetchPrivatePostsAction,
-  fetchPublicPostsAction,
-} from "../../redux/slices/posts/postsSlice";
+import { fetchPrivatePostsAction } from "../../redux/slices/posts/postsSlice";
 import LoadingComponent from "../Alert/Loadingcomponent";
 import { Link } from "react-router-dom";
+import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
+import { useNavigate } from "react-router-dom";
 
 const PostLists = () => {
   //! redux store
@@ -13,11 +12,25 @@ const PostLists = () => {
   const { posts, error, loading, success } = useSelector(
     (state) => state?.posts
   );
+  const [category, setCategory] = useState("");
+
+  const [selectedCategory, setSelectedCategory] = useState(null);
+
+  const navigate = useNavigate();
+
+
+  const handleCategoryClick = (category) => {
+    setCategory(category._id);
+    setSelectedCategory(category._id);
+    navigate(`?category=${encodeURIComponent(category.name)}`);
+  };
   //dispatch
   useEffect(() => {
-    dispatch(fetchPrivatePostsAction());
-  }, [dispatch]);
+    dispatch(fetchPrivatePostsAction({ category }));
+    dispatch(fetchCategoriesAction());
+  }, [dispatch, category]);
 
+  const { categories } = useSelector((state) => state?.categories);
   return (
     <>
       <div>
@@ -39,6 +52,21 @@ const PostLists = () => {
               <h3 className="mb-4 text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter">
                 Read our Trending Articles
               </h3>
+            </div>
+
+            {/* Categories */}
+            <div className="flex justify-center mb-4">
+              {categories?.categories?.map((category) => (
+                <button
+                  key={category._id}
+                  className={`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
+                    selectedCategory === category._id ? "bg-blue-600" : ""
+                  }`}
+                  onClick={() => handleCategoryClick(category)}
+                >
+                  {category.name}
+                </button>
+              ))}
             </div>
 
             <div className="flex flex-wrap -mx-4 mb-12 md:mb-20">
