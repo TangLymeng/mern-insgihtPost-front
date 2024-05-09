@@ -52,7 +52,7 @@ const UploadProfileImage = () => {
   return (
     <div className="min-h-screen flex items-center justify-center">
       <form onSubmit={handleSubmit} className="w-full lg:w-1/2">
-        <div className="flex flex-col items-center p-10 xl:px-24 xl:pb-12 bg-white lg:max-w-xl lg:ml-auto rounded-4xl shadow-2xl">
+        <div className="flex flex-col items-center p-10 xl:px-24 xl:pb-12 bg-white lg:max-w-4xl lg:ml-auto rounded-4xl shadow-2xl">
           <h2 className="mb-4 text-2xl md:text-3xl text-coolGray-900 font-bold text-center">
             Upload Profile Image
           </h2>

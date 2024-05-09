@@ -14,10 +14,11 @@ const PostLists = () => {
   );
   const [category, setCategory] = useState("");
 
+  const [searchTerm, setSearchTerm] = useState("");
+
   const [selectedCategory, setSelectedCategory] = useState(null);
 
   const navigate = useNavigate();
-
 
   const handleCategoryClick = (category) => {
     setCategory(category._id);
@@ -26,9 +27,9 @@ const PostLists = () => {
   };
   //dispatch
   useEffect(() => {
-    dispatch(fetchPrivatePostsAction({ category }));
+    dispatch(fetchPrivatePostsAction({ category, searchTerm }));
     dispatch(fetchCategoriesAction());
-  }, [dispatch, category]);
+  }, [dispatch, category, searchTerm]);
 
   const { categories } = useSelector((state) => state?.categories);
   return (
@@ -52,6 +53,14 @@ const PostLists = () => {
               <h3 className="mb-4 text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter">
                 Read our Trending Articles
               </h3>
+              {/* Search input */}
+              <input
+                className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
+                type="text"
+                placeholder="Search By Title"
+                value={searchTerm}
+                onChange={(e) => setSearchTerm(e.target.value)}
+              />
             </div>
 
             {/* Categories */}

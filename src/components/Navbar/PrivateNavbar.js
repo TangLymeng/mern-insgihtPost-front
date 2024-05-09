@@ -91,7 +91,7 @@ export default function PrivateNavbar() {
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"
-                          src={userAuth?.userInfo?.profilePicture}
+                          src={userAuth?.userInfo?.profilePicture || "https://res.cloudinary.com/dulfgdn5w/image/upload/v1715157387/insightPost-api/tvxzyhimiqhvtoq0fuc5"}
                           alt={userAuth?.userInfo?.username}
                         />
                       </Menu.Button>
