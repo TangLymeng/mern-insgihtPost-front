@@ -20,6 +20,9 @@ const PostLists = () => {
 
   const navigate = useNavigate();
 
+  //Pagination state
+  const [page, setPage] = useState(1);
+
   const handleCategoryClick = (category) => {
     setCategory(category._id);
     setSelectedCategory(category._id);
@@ -27,9 +30,12 @@ const PostLists = () => {
   };
   //dispatch
   useEffect(() => {
-    dispatch(fetchPrivatePostsAction({ category, searchTerm }));
+    dispatch(fetchPrivatePostsAction({ page, limit: 4, category, searchTerm }));
     dispatch(fetchCategoriesAction());
-  }, [dispatch, category, searchTerm]);
+  }, [dispatch, category, searchTerm, page]);
+
+  const handleNext = () => setPage(page + 1);
+  const handlePrev = () => setPage(page > 1 ? page - 1 : 1);
 
   const { categories } = useSelector((state) => state?.categories);
   return (
@@ -153,6 +159,21 @@ const PostLists = () => {
             </div>
           </div>
         </section>
+        {/* Pagination buttons */}
+        <div className="flex justify-center items-center my-4 space-x-2">
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handlePrev}
+          >
+            Prev
+          </button>
+          <button
+            className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
+            onClick={handleNext}
+          >
+            Next
+          </button>
+        </div>
       </div>
     </>
   );
