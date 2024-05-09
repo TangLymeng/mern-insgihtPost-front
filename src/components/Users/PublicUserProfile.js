@@ -33,7 +33,7 @@ export default function PublicUserProfile() {
                   <div>
                     <img
                       className="h-32 w-full object-cover lg:h-48"
-                      src={profile?.user?.coverImage}
+                      src={profile?.user?.coverImage || "https://res.cloudinary.com/dulfgdn5w/image/upload/v1715157387/insightPost-api/tvxzyhimiqhvtoq0fuc5"}
                       alt={profile?.user?.username}
                     />
                   </div>
@@ -42,7 +42,7 @@ export default function PublicUserProfile() {
                       <div className="flex">
                         <img
                           className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src={profile?.user?.profilePicture}
+                          src={profile?.user?.profilePicture || "https://res.cloudinary.com/dulfgdn5w/image/upload/v1715157387/insightPost-api/tvxzyhimiqhvtoq0fuc5"}
                           alt={profile?.user?.username}
                         />
                       </div>
