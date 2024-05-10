@@ -2,6 +2,7 @@ import React, { useState } from "react";
 
 const CommentsList = ({ comments }) => {
   return (
+    
     <div className="flex flex-col space-y-4">
       <div className="flex space-x-4">
         {/* <div className="flex-none">
@@ -17,6 +18,8 @@ const CommentsList = ({ comments }) => {
               <h2>No Comments</h2>
             ) : (
               comments?.map((comment) => {
+                console.log(comment?.author);
+
                 return (
                   <>
                     <article className="p-6 text-base bg-white rounded-lg">
@@ -25,7 +28,7 @@ const CommentsList = ({ comments }) => {
                           <p className="inline-flex items-center mr-3 text-sm text-gray-900 font-semibold">
                             <img
                               className="mr-2 w-6 h-6 rounded-full"
-                              src="https://flowbite.com/docs/images/people/profile-picture-2.jpg"
+                              src={comment?.author?.profilePicture}
                               alt="Michael Gough"
                             />
                             {comment?.author?.username}

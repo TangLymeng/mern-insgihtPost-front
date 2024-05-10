@@ -90,7 +90,7 @@ const PostDetails = () => {
                 <div className="w-auto px-2">
                   <img
                     className="w-12 h-12 rounded-full"
-                    src={post?.post?.image}
+                    src={post?.post?.author?.profilePicture}
                     alt="post image"
                   />
                 </div>

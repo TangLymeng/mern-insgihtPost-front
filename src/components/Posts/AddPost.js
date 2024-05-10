@@ -8,10 +8,13 @@ import ErrorComponent from "../Alert/ErrorMsg";
 import SuccessComponent from "../Alert/SuccessMsg";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
+import { useNavigate } from "react-router-dom";
 
 const AddPost = () => {
   //fetch categories
   const dispatch = useDispatch();
+  //navigation
+  const navigate = useNavigate();
   //! Error state
   const [errors, setErrors] = useState({});
   //get data from store
@@ -31,7 +34,10 @@ const AddPost = () => {
 
   useEffect(() => {
     dispatch(fetchCategoriesAction());
-  }, [dispatch]);
+    if (success) {
+      navigate("/posts");
+    }
+  }, [dispatch, success]);
   //! form data
   const [formData, setFormData] = useState({
     title: "",
