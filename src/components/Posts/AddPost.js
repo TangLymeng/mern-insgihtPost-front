@@ -20,6 +20,31 @@ const AddPost = () => {
   //get data from store
   const { categories } = useSelector((state) => state?.categories);
 
+  // Customize the toolbar options
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      [{ "code-block": true }],
+      ["clean"],
+    ],
+  };
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "link",
+    "image",
+    "code-block",
+  ];
+
   const options = categories?.categories?.map((category) => {
     return {
       value: category?._id,
@@ -79,20 +104,20 @@ const AddPost = () => {
   const handleSelectChange = (selectedOption) => {
     setFormData({ ...formData, category: selectedOption.value });
   };
-  const handleSubmit =  (e) => {
+  const handleSubmit = (e) => {
     e.preventDefault();
-      const errors = validateForm(formData);
-      setErrors(errors);
-      if (Object.keys(errors).length === 0) {
-        dispatch(addPostAction(formData));
-        e.preventDefault();
-        setFormData({
-          title: "",
-          image: null,
-          category: null,
-          content: "",
-        });
-      }
+    const errors = validateForm(formData);
+    setErrors(errors);
+    if (Object.keys(errors).length === 0) {
+      dispatch(addPostAction(formData));
+      e.preventDefault();
+      setFormData({
+        title: "",
+        image: null,
+        category: null,
+        content: "",
+      });
+    }
   };
 
   return (
@@ -153,6 +178,7 @@ const AddPost = () => {
             <span className="mb-1 text-coolGray-800 font-medium">Content</span>
             <ReactQuill
               theme="snow"
+              modules={modules}
               className=" leading-5 w-full text-coolGray-400 font-normal"
               placeholder="Write your post content"
               name="content"
