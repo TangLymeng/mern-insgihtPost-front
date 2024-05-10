@@ -66,6 +66,31 @@ const UpdatePost = () => {
     });
   };
 
+    // Customize the toolbar options
+    const modules = {
+      toolbar: [
+        [{ header: [1, 2, false] }],
+        ["bold", "italic", "underline", "strike", "blockquote"],
+        [{ list: "ordered" }, { list: "bullet" }],
+        ["link", "image"],
+        [{ "code-block": true }],
+        ["clean"],
+      ],
+    };
+    const formats = [
+      "header",
+      "bold",
+      "italic",
+      "underline",
+      "strike",
+      "blockquote",
+      "list",
+      "bullet",
+      "link",
+      "image",
+      "code-block",
+    ];
+
   return (
     <div className="min-h-screen flex items-center justify-center">
       <form onSubmit={handleSubmit} className="w-full lg:w-1/2">
@@ -115,6 +140,7 @@ const UpdatePost = () => {
             <span className="mb-1 text-coolGray-800 font-medium">Content</span>
             <ReactQuill
               theme="snow"
+              modules={modules}
               className=" leading-5 w-full text-coolGray-400 font-normal"
               placeholder="Write your post content"
               name="content"
