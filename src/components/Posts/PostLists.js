@@ -16,18 +16,11 @@ const PostLists = () => {
 
   const [searchTerm, setSearchTerm] = useState("");
 
-  const [selectedCategory, setSelectedCategory] = useState(null);
-
   const navigate = useNavigate();
 
   //Pagination state
   const [page, setPage] = useState(1);
-
-  const handleCategoryClick = (category) => {
-    setCategory(category._id);
-    setSelectedCategory(category._id);
-    navigate(`?category=${encodeURIComponent(category.name)}`);
-  };
+  
   //dispatch
   useEffect(() => {
     dispatch(fetchPrivatePostsAction({ page, limit: 4, category, searchTerm }));
@@ -70,19 +63,52 @@ const PostLists = () => {
             </div>
 
             {/* Categories */}
+
             <div className="flex justify-center mb-4">
+              {categories?.categories?.map((category) => {
+                return (
+                  <button
+                    className = {`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
+                      category?._id === category ? "bg-blue-600" : ""
+                    }`}
+                    onClick={() => setCategory(category?._id)}
+                    key={category?._id}
+                  >
+                    {category?.name}
+                  </button>
+                );
+              })}
+            </div>
+
+            {/* <div className="flex justify-center mb-4">
               {categories?.categories?.map((category) => (
                 <button
                   key={category._id}
                   className={`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
                     selectedCategory === category._id ? "bg-blue-600" : ""
                   }`}
-                  onClick={() => handleCategoryClick(category)}
+                  onClick={() => setCategory(category?._id)}
                 >
                   {category.name}
                 </button>
               ))}
-            </div>
+            </div> */}
+
+            {/* <div>
+              {categories?.categories?.map((category) => {
+                return (
+                  <button
+                    className = {`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
+                      category?._id === category ? "bg-blue-600" : ""
+                    }`}
+                    onClick={() => setCategory(category?._id)}
+                    key={category?._id}
+                  >
+                    {category?.name}
+                  </button>
+                );
+              })}
+            </div> */}
 
             <div className="flex flex-wrap -mx-4 mb-12 md:mb-20">
               {/* loop */}

@@ -33,7 +33,7 @@ const UserPosts = ({ posts }) => {
                 <div className="w-full px-4 mb-8 md:w-1/2">
                   <a className="block mb-6 overflow-hidden rounded-md" href="#">
                     <img
-                      className="w-full"
+                      className="w-full h-80 object-cover"
                       src={post?.image}
                       alt={post?.tile}
                     />

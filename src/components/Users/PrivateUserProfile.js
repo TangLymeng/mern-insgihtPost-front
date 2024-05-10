@@ -3,6 +3,7 @@ import { userPrivateProfileAction } from "../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
 import { Link } from "react-router-dom";
 import { useEffect } from "react";
+import UserPosts from "../Posts/UserPosts";
 // const profile = {
 //   name: "Ricardo Cooper",
 //   imageUrl:
@@ -33,11 +34,11 @@ export default function PrivateUserProfile() {
     dispatch(userPrivateProfileAction());
   }, [dispatch]);
 
-  const { user, loading, error, profile } = useSelector(
+  const { userAuth, user, loading, error, profile } = useSelector(
     (state) => state?.users
   );
 
-  console.log(profile?.user?.username);
+  console.log(userAuth?.userInfo?.token);
 
   return (
     <>
@@ -177,6 +178,8 @@ export default function PrivateUserProfile() {
                   </dl>
                 </div>
                 {/* Posts Lists */}
+                <UserPosts posts={profile?.user?.posts} />
+
                 {/* <UserPosts /> */}
                 {/* Followers */}
                 {/* <Followers /> */}
