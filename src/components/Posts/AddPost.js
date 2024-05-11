@@ -9,6 +9,7 @@ import SuccessComponent from "../Alert/SuccessMsg";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
+import QuillToolbar, {modules, formats} from "../Editor/QuillToolbar";
 
 const AddPost = () => {
   //fetch categories
@@ -21,29 +22,31 @@ const AddPost = () => {
   const { categories } = useSelector((state) => state?.categories);
 
   // Customize the toolbar options
-  const modules = {
-    toolbar: [
-      [{ header: [1, 2, false] }],
-      ["bold", "italic", "underline", "strike", "blockquote"],
-      [{ list: "ordered" }, { list: "bullet" }],
-      ["link", "image"],
-      [{ "code-block": true }],
-      ["clean"],
-    ],
-  };
-  const formats = [
-    "header",
-    "bold",
-    "italic",
-    "underline",
-    "strike",
-    "blockquote",
-    "list",
-    "bullet",
-    "link",
-    "image",
-    "code-block",
-  ];
+  // const modules = {
+  //   toolbar: [
+  //     [{ header: [1, 2, false] }],
+  //     ["bold", "italic", "underline", "strike", "blockquote"],
+  //     [{ list: "ordered" }, { list: "bullet" }],
+  //     ["link", "image"],
+  //     [{ "code-block": true }],
+  //     ["clean"],
+  //   ],
+  // };
+  // const formats = [
+  //   "header",
+  //   "bold",
+  //   "italic",
+  //   "underline",
+  //   "strike",
+  //   "blockquote",
+  //   "list",
+  //   "bullet",
+  //   "link",
+  //   "image",
+  //   "code-block",
+  // ];
+
+  
 
   const options = categories?.categories?.map((category) => {
     return {
@@ -176,9 +179,11 @@ const AddPost = () => {
           </label>
           <label className="mb-4 flex flex-col w-full">
             <span className="mb-1 text-coolGray-800 font-medium">Content</span>
+            <QuillToolbar />
             <ReactQuill
               theme="snow"
               modules={modules}
+              formats={formats}
               className=" leading-5 w-full text-coolGray-400 font-normal"
               placeholder="Write your post content"
               name="content"
