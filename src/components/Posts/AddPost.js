@@ -19,34 +19,7 @@ const AddPost = () => {
   //! Error state
   const [errors, setErrors] = useState({});
   //get data from store
-  const { categories } = useSelector((state) => state?.categories);
-
-  // Customize the toolbar options
-  // const modules = {
-  //   toolbar: [
-  //     [{ header: [1, 2, false] }],
-  //     ["bold", "italic", "underline", "strike", "blockquote"],
-  //     [{ list: "ordered" }, { list: "bullet" }],
-  //     ["link", "image"],
-  //     [{ "code-block": true }],
-  //     ["clean"],
-  //   ],
-  // };
-  // const formats = [
-  //   "header",
-  //   "bold",
-  //   "italic",
-  //   "underline",
-  //   "strike",
-  //   "blockquote",
-  //   "list",
-  //   "bullet",
-  //   "link",
-  //   "image",
-  //   "code-block",
-  // ];
-
-  
+  const { categories } = useSelector((state) => state?.categories);  
 
   const options = categories?.categories?.map((category) => {
     return {
