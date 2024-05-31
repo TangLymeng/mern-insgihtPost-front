@@ -53,9 +53,18 @@ const PostDetails = () => {
       navigate("/posts");
     }
   };
+
+  const handleTagClick = (tagName) => {
+    navigate(`/posts/tags/${tagName}`, { state: { tagName } });
+  };
+
+  console.log({ post });
+
   return (
     <>
-      {error ? (
+      {loading ? (
+        <LoadingComponent />
+      ) : error ? (
         <ErrorMsg message={error?.message} />
       ) : (
         <section
@@ -180,6 +189,23 @@ const PostDetails = () => {
                   </button>
                 </div>
               )}
+
+              <h2 className="text-lg lg:text-2xl font-bold text-gray-900">
+                Tags :
+              </h2>
+              <div className="flex justify-center mb-4">
+                {post?.post?.tags?.map((tag, index) => {
+                  return (
+                    <button
+                      className="mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded-full"
+                      key={index}
+                      onClick={() => handleTagClick(tag)}
+                    >
+                      {tag}
+                    </button>
+                  );
+                })}
+              </div>
 
               {/* Comment form */}
               <AddComment postId={postId} comments={post?.post?.comments} />

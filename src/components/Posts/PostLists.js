@@ -20,15 +20,14 @@ const PostLists = () => {
 
   //Pagination state
   const [page, setPage] = useState(1);
-  
+
   //dispatch
   useEffect(() => {
-    dispatch(fetchPrivatePostsAction({ page, limit: 4, category, searchTerm }));
+    dispatch(fetchPrivatePostsAction({ category, searchTerm }));
     dispatch(fetchCategoriesAction());
-  }, [dispatch, category, searchTerm, page]);
+  }, [dispatch, category, searchTerm]);
 
-  const handleNext = () => setPage(page + 1);
-  const handlePrev = () => setPage(page > 1 ? page - 1 : 1);
+
 
   const { categories } = useSelector((state) => state?.categories);
   return (
@@ -68,7 +67,7 @@ const PostLists = () => {
               {categories?.categories?.map((category) => {
                 return (
                   <button
-                    className = {`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
+                    className={`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
                       category?._id === category ? "bg-blue-600" : ""
                     }`}
                     onClick={() => setCategory(category?._id)}
@@ -79,37 +78,6 @@ const PostLists = () => {
                 );
               })}
             </div>
-
-            {/* <div className="flex justify-center mb-4">
-              {categories?.categories?.map((category) => (
-                <button
-                  key={category._id}
-                  className={`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
-                    selectedCategory === category._id ? "bg-blue-600" : ""
-                  }`}
-                  onClick={() => setCategory(category?._id)}
-                >
-                  {category.name}
-                </button>
-              ))}
-            </div> */}
-
-            {/* <div>
-              {categories?.categories?.map((category) => {
-                return (
-                  <button
-                    className = {`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
-                      category?._id === category ? "bg-blue-600" : ""
-                    }`}
-                    onClick={() => setCategory(category?._id)}
-                    key={category?._id}
-                  >
-                    {category?.name}
-                  </button>
-                );
-              })}
-            </div> */}
-
             <div className="flex flex-wrap -mx-4 mb-12 md:mb-20">
               {/* loop */}
               {loading ? (
@@ -148,8 +116,7 @@ const PostLists = () => {
                       </p>
                       <Link
                         className="inline-block mb-4 text-2xl md:text-3xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline"
-                        href="#"
-                        to={`/posts/${post?._id}`}
+                        to={`/posts/${post?._id}`} // Use "to" instead of "href"
                       >
                         {post?.title}
                       </Link>
@@ -186,7 +153,7 @@ const PostLists = () => {
           </div>
         </section>
         {/* Pagination buttons */}
-        <div className="flex justify-center items-center my-4 space-x-2">
+        {/* <div className="flex justify-center items-center my-4 space-x-2">
           <button
             className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
             onClick={handlePrev}
@@ -199,7 +166,7 @@ const PostLists = () => {
           >
             Next
           </button>
-        </div>
+        </div> */}
       </div>
     </>
   );

@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import Select from "react-select";
+import CreatableSelect from "react-select/creatable";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
 import { addPostAction } from "../../redux/slices/posts/postsSlice";
 import LoadingComponent from "../Alert/Loadingcomponent";
@@ -9,53 +10,19 @@ import SuccessComponent from "../Alert/SuccessMsg";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { useNavigate } from "react-router-dom";
-import QuillToolbar, {modules, formats} from "../Editor/QuillToolbar";
+import QuillToolbar, { modules, formats } from "../Editor/QuillToolbar";
 
 const AddPost = () => {
-  //fetch categories
   const dispatch = useDispatch();
-  //navigation
   const navigate = useNavigate();
-  //! Error state
   const [errors, setErrors] = useState({});
-  //get data from store
   const { categories } = useSelector((state) => state?.categories);
-
-  // Customize the toolbar options
-  // const modules = {
-  //   toolbar: [
-  //     [{ header: [1, 2, false] }],
-  //     ["bold", "italic", "underline", "strike", "blockquote"],
-  //     [{ list: "ordered" }, { list: "bullet" }],
-  //     ["link", "image"],
-  //     [{ "code-block": true }],
-  //     ["clean"],
-  //   ],
-  // };
-  // const formats = [
-  //   "header",
-  //   "bold",
-  //   "italic",
-  //   "underline",
-  //   "strike",
-  //   "blockquote",
-  //   "list",
-  //   "bullet",
-  //   "link",
-  //   "image",
-  //   "code-block",
-  // ];
-
-  
-
   const options = categories?.categories?.map((category) => {
     return {
       value: category?._id,
       label: category?.name,
     };
   });
-
-  //! Get post from store
   const { post, error, loading, success } = useSelector(
     (state) => state?.posts
   );
@@ -65,16 +32,16 @@ const AddPost = () => {
     if (success) {
       navigate("/posts");
     }
-  }, [dispatch, success]);
-  //! form data
+  }, [dispatch, success, navigate]);
+
   const [formData, setFormData] = useState({
     title: "",
     image: null,
     category: null,
     content: "",
+    tags: [],
   });
 
-  //1. Validate form
   const validateForm = (data) => {
     let errors = {};
     if (!data.title) errors.title = "Title is required";
@@ -84,9 +51,7 @@ const AddPost = () => {
     return errors;
   };
 
-  //2. HandleBlur
   const handleBlur = (e) => {
-    // Check if e exists and if e.target exists
     if (e && e.target) {
       const { name } = e.target;
       const formErrors = validateForm(formData);
@@ -98,27 +63,35 @@ const AddPost = () => {
     setFormData({ ...formData, [name]: value });
   };
 
-  //! Handle image change
   const handleFileChange = (e) => {
     setFormData({ ...formData, image: e.target.files[0] });
   };
 
-  //! React select handle change
   const handleSelectChange = (selectedOption) => {
     setFormData({ ...formData, category: selectedOption.value });
   };
+
+  const handleTagChange = (newValue) => {
+    setFormData({ ...formData, tags: newValue.map((tag) => tag.value) });
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
     const errors = validateForm(formData);
     setErrors(errors);
     if (Object.keys(errors).length === 0) {
-      dispatch(addPostAction(formData));
-      e.preventDefault();
+      dispatch(
+        addPostAction({
+          ...formData,
+          tags: formData.tags,
+        })
+      );
       setFormData({
         title: "",
         image: null,
         category: null,
         content: "",
+        tags: [],
       });
     }
   };
@@ -130,7 +103,6 @@ const AddPost = () => {
           <h2 className="mb-4 text-2xl md:text-3xl text-coolGray-900 font-bold text-center">
             Add New Post
           </h2>
-          {/* error */}
           {error && <ErrorComponent message={error?.message} />}
           {success && <SuccessComponent message="Post created successfully" />}
           <h3 className="mb-7 text-base md:text-lg text-coolGray-500 font-medium text-center">
@@ -147,7 +119,6 @@ const AddPost = () => {
               onChange={(e) => handleChange(e.target.name, e.target.value)}
               onBlur={handleBlur}
             />
-            {/* error here */}
             {errors?.title && <p className="text-red-500 ">{errors.title}</p>}
           </label>
 
@@ -160,22 +131,30 @@ const AddPost = () => {
               onChange={handleFileChange}
               onBlur={handleBlur}
             />
-            {/* error here  */}
             {errors?.image && <p className="text-red-500 ">{errors.image}</p>}
           </label>
-          {/* category here */}
+
           <label className="mb-4 flex flex-col w-full">
-            <span className="mb-1 text-coolGray-800 font-medium">category</span>
+            <span className="mb-1 text-coolGray-800 font-medium">Category</span>
             <Select
               options={options}
               name="category"
               onChange={handleSelectChange}
               onBlur={handleBlur}
             />
-            {/* error here */}
             {errors?.category && (
               <p className="text-red-500 ">{errors.category}</p>
             )}
+          </label>
+          <label className="mb-4 flex flex-col w-full">
+            <span className="mb-1 text-coolGray-800 font-medium">Tags</span>
+            <CreatableSelect
+              isMulti
+              onChange={handleTagChange}
+              value={formData.tags.map((tag) => ({ label: tag, value: tag }))}
+              options={formData.tags.map((tag) => ({ label: tag, value: tag }))}
+              placeholder="Enter tags"
+            />
           </label>
           <label className="mb-4 flex flex-col w-full">
             <span className="mb-1 text-coolGray-800 font-medium">Content</span>
@@ -191,12 +170,11 @@ const AddPost = () => {
               onChange={(content) => handleChange("content", content)}
               onBlur={handleBlur}
             />
-            {/* error here */}
             {errors?.content && (
               <p className="text-red-500 ">{errors.content}</p>
             )}
           </label>
-          {/* button */}
+
           {loading ? (
             <LoadingComponent />
           ) : (

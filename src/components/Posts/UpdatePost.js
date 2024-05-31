@@ -5,7 +5,11 @@ import Select from "react-select";
 import ReactQuill from "react-quill";
 import "react-quill/dist/quill.snow.css";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
-import { getPostAction, updatePostAction } from "../../redux/slices/posts/postsSlice";
+import {
+  getPostAction,
+  updatePostAction,
+} from "../../redux/slices/posts/postsSlice";
+import CreatableSelect from "react-select/creatable";
 import LoadingComponent from "../Alert/Loadingcomponent";
 import ErrorMsg from "../Alert/ErrorMsg";
 import SuccessMsg from "../Alert/SuccessMsg";
@@ -14,7 +18,6 @@ const UpdatePost = () => {
   const { postId } = useParams();
   const dispatch = useDispatch();
   const navigate = useNavigate();
-  const [errors, setErrors] = useState({});
   const { categories } = useSelector((state) => state.categories);
   const { post, error, loading, success } = useSelector((state) => state.posts);
 
@@ -23,6 +26,14 @@ const UpdatePost = () => {
     dispatch(getPostAction(postId));
   }, [dispatch, postId]);
 
+  const [formData, setFormData] = useState({
+    title: "",
+    image: null,
+    category: null,
+    content: "",
+    tags: [], // initialize as empty array
+  });
+
   useEffect(() => {
     if (post) {
       setFormData({
@@ -30,6 +41,11 @@ const UpdatePost = () => {
         image: null,
         category: post?.post?.category?._id,
         content: post?.post?.content,
+        tags:
+          post?.post?.tags?.map((tag) => ({
+            label: tag,
+            value: tag,
+          })) || [],
       });
     }
   }, [post]);
@@ -39,13 +55,6 @@ const UpdatePost = () => {
     label: category.name,
   }));
 
-  const [formData, setFormData] = useState({
-    title: "",
-    image: null,
-    category: null,
-    content: "",
-  });
-
   const handleChange = (name, value) => {
     setFormData({ ...formData, [name]: value });
   };
@@ -54,42 +63,57 @@ const UpdatePost = () => {
     setFormData({ ...formData, category: selectedOption.value });
   };
 
+  const handleTagChange = (newValue) => {
+    // newValue is an array of objects [{label: 'tag1', value: 'tag1'}, {label: 'tag2', value: 'tag2'}, ...]
+    setFormData({ ...formData, tags: newValue });
+  };
+
   const handleFileChange = (e) => {
     setFormData({ ...formData, image: e.target.files[0] });
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    dispatch(updatePostAction({ ...formData, postId })).then(() => {
-      // Navigate to post detail page after update is successful
+    // Extract only the tag names (strings) from the formData
+    const tagNames = formData.tags.map((tag) => tag.label);
+    const payload = {
+      ...formData,
+      tags: tagNames,
+    };
+
+    // Log the payload to ensure it's correctly formatted
+    console.log("Payload before dispatch:", payload);
+
+    dispatch(updatePostAction({ ...payload, postId })).then(() => {
+      console.log(payload);
       navigate(`/posts/${postId}`);
     });
   };
 
-    // Customize the toolbar options
-    const modules = {
-      toolbar: [
-        [{ header: [1, 2, false] }],
-        ["bold", "italic", "underline", "strike", "blockquote"],
-        [{ list: "ordered" }, { list: "bullet" }],
-        ["link", "image"],
-        [{ "code-block": true }],
-        ["clean"],
-      ],
-    };
-    const formats = [
-      "header",
-      "bold",
-      "italic",
-      "underline",
-      "strike",
-      "blockquote",
-      "list",
-      "bullet",
-      "link",
-      "image",
-      "code-block",
-    ];
+  const modules = {
+    toolbar: [
+      [{ header: [1, 2, false] }],
+      ["bold", "italic", "underline", "strike", "blockquote"],
+      [{ list: "ordered" }, { list: "bullet" }],
+      ["link", "image"],
+      [{ "code-block": true }],
+      ["clean"],
+    ],
+  };
+
+  const formats = [
+    "header",
+    "bold",
+    "italic",
+    "underline",
+    "strike",
+    "blockquote",
+    "list",
+    "bullet",
+    "link",
+    "image",
+    "code-block",
+  ];
 
   return (
     <div className="min-h-screen flex items-center justify-center">
@@ -134,6 +158,15 @@ const UpdatePost = () => {
                   : null
               }
               onChange={handleSelectChange}
+            />
+          </label>
+          <label className="mb-4 flex flex-col w-full">
+            <span className="mb-1 text-coolGray-800 font-medium">Tags</span>
+            <CreatableSelect
+              isMulti
+              value={formData.tags}
+              onChange={handleTagChange}
+              placeholder="Enter tags"
             />
           </label>
           <label className="mb-4 flex flex-col w-full">

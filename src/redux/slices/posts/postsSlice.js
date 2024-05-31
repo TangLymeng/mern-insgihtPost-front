@@ -21,9 +21,7 @@ export const fetchPublicPostsAction = createAsyncThunk(
   async (payload, { rejectWithValue, getState, dispatch }) => {
     //make request
     try {
-      const { data } = await axios.get(
-        `${BASE_URL}/posts/public`
-      );
+      const { data } = await axios.get(`${BASE_URL}/posts/public`);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -34,7 +32,10 @@ export const fetchPublicPostsAction = createAsyncThunk(
 //Fetch private posts
 export const fetchPrivatePostsAction = createAsyncThunk(
   "posts/fetch-private-posts",
-  async ({page = 1, limit = 4, category = "", searchTerm = ""}, { rejectWithValue, getState, dispatch }) => {
+  async (
+    { page = 1, limit = 20, category = "", searchTerm = "" },
+    { rejectWithValue, getState, dispatch }
+  ) => {
     //make request
     try {
       const token = getState().users?.userAuth?.userInfo?.token;
@@ -44,7 +45,7 @@ export const fetchPrivatePostsAction = createAsyncThunk(
         },
       };
       const { data } = await axios.get(
-        `${BASE_URL}/posts?page=${page}&limit=${limit}?&category=${category}&searchTerm=${searchTerm}`,
+        `${BASE_URL}/posts?page=${page}&limit=${limit}&category=${category}&searchTerm=${searchTerm}`,
         config
       );
       return data;
@@ -83,12 +84,22 @@ export const getPostAction = createAsyncThunk(
   async (postId, { rejectWithValue, getState, dispatch }) => {
     //make request
     try {
-      const { data } = await axios.get(
-        `${BASE_URL}/posts/${postId}`
-      );
+      const { data } = await axios.get(`${BASE_URL}/posts/${postId}`);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
+    }
+  }
+);
+
+export const fetchPostsByTagAction = createAsyncThunk(
+  "posts/fetchByTag",
+  async (tagName, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`${BASE_URL}/posts/tags/${tagName}`);
+      return response.data.posts;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
     }
   }
 );
@@ -104,6 +115,8 @@ export const addPostAction = createAsyncThunk(
       formData.append("content", payload?.content);
       formData.append("categoryId", payload?.category);
       formData.append("file", payload?.image);
+      // Convert tags array to a comma-separated string or JSON string
+      formData.append("tags", JSON.stringify(payload?.tags));
 
       const token = getState().users?.userAuth?.userInfo?.token;
       const config = {
@@ -111,11 +124,7 @@ export const addPostAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
-      const data = await axios.post(
-        `${BASE_URL}/posts`,
-        formData,
-        config
-      );
+      const data = await axios.post(`${BASE_URL}/posts`, formData, config);
       return data;
     } catch (error) {
       return rejectWithValue(error?.response?.data);
@@ -134,8 +143,7 @@ export const updatePostAction = createAsyncThunk(
       formData.append("content", payload?.content);
       formData.append("category", payload?.category);
       formData.append("file", payload?.image);
-
-      console.log("Form Data:", formData);
+      formData.append("tags", JSON.stringify(payload?.tags)); // Correctly stringify the tags array
 
       const token = getState().users?.userAuth?.userInfo?.token;
       const config = {
@@ -256,6 +264,22 @@ const postSlice = createSlice({
   name: "posts",
   initialState: INITIAL_STATE,
   extraReducers: (builder) => {
+    // Fetch posts by tag - pending
+    builder.addCase(fetchPostsByTagAction.pending, (state) => {
+      state.loading = true;
+      state.error = null;
+    });
+    // Fetch posts by tag - fulfilled
+    builder.addCase(fetchPostsByTagAction.fulfilled, (state, action) => {
+      state.loading = false;
+      state.posts = action.payload; // Update posts array with fetched posts
+      state.error = null;
+    });
+    // Fetch posts by tag - rejected
+    builder.addCase(fetchPostsByTagAction.rejected, (state, action) => {
+      state.loading = false;
+      state.error = action.payload;
+    });
     //fetch public posts
     builder.addCase(fetchPublicPostsAction.pending, (state, action) => {
       state.loading = true;
@@ -274,6 +298,7 @@ const postSlice = createSlice({
     //! get single post
     builder.addCase(getPostAction.pending, (state, action) => {
       state.loading = true;
+      state.error = null;
     });
     //handle fulfilled state
     builder.addCase(getPostAction.fulfilled, (state, action) => {
