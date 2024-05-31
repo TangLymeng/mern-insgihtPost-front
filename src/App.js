@@ -13,6 +13,7 @@ import PostLists from "./components/Posts/PostLists";
 import UpdatePost from "./components/Posts/UpdatePost";
 import UploadProfileImage from "./components/Users/UploadProfileImage";
 import UploadCoverImage from "./components/Users/UploadCoverImage";
+import PostsByTag from "./components/Posts/PostsByTag";
 import BlogList from "./Templates/BlogList";
 import TestAddPost from "./Templates/TestAddPost";
 
@@ -51,6 +52,14 @@ export default function App() {
           element={
             <ProctectedRoute>
               <AddPost />
+            </ProctectedRoute>
+          }
+        ></Route>
+        <Route
+          path="/posts/tags/:tagName"
+          element={
+            <ProctectedRoute>
+              <PostsByTag />
             </ProctectedRoute>
           }
         ></Route>
@@ -110,16 +119,15 @@ export default function App() {
           }
         ></Route>
 
-<Route
+        <Route
           path="/test"
           element={
             <ProctectedRoute>
               <TestAddPost />
-
             </ProctectedRoute>
           }
         ></Route>
-        
+
       </Routes>
     </BrowserRouter>
   );
