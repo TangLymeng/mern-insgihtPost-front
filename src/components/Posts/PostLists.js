@@ -5,6 +5,8 @@ import LoadingComponent from "../Alert/Loadingcomponent";
 import { Link } from "react-router-dom";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
 import { useNavigate } from "react-router-dom";
+import DatePicker from "react-datepicker"; // Import the date picker library
+import "react-datepicker/dist/react-datepicker.css"; // Import the date picker CSS
 
 const PostLists = () => {
   //! redux store
@@ -13,9 +15,9 @@ const PostLists = () => {
     (state) => state?.posts
   );
   const [category, setCategory] = useState("");
-
   const [searchTerm, setSearchTerm] = useState("");
-
+  const [startDate, setStartDate] = useState(""); // State for start date
+  const [endDate, setEndDate] = useState(""); // State for end date
   const navigate = useNavigate();
 
   //Pagination state
@@ -23,13 +25,21 @@ const PostLists = () => {
 
   //dispatch
   useEffect(() => {
-    dispatch(fetchPrivatePostsAction({ category, searchTerm }));
+    console.log({ category, searchTerm, startDate, endDate, page }); // Add this line
+    dispatch(
+      fetchPrivatePostsAction({
+        category,
+        searchTerm,
+        startDate,
+        endDate,
+        page,
+      })
+    );
     dispatch(fetchCategoriesAction());
-  }, [dispatch, category, searchTerm]);
-
-
+  }, [dispatch, category, searchTerm, startDate, endDate, page]);
 
   const { categories } = useSelector((state) => state?.categories);
+
   return (
     <>
       <div>
@@ -61,8 +71,27 @@ const PostLists = () => {
               />
             </div>
 
-            {/* Categories */}
+            {/* Date Pickers */}
+            <div className="flex justify-center mb-4">
+              {/* Date range inputs */}
+              <input
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="border border-gray-300 rounded-md p-2 mr-2 focus:border-green-500 focus:outline-none"
+                placeholder="Start Date"
+              />
+              <p className="p-2 mr-2"> to </p>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="border border-gray-300 rounded-md p-2 focus:border-green-500 focus:outline-none"
+                placeholder="End Date"
+              />
+            </div>
 
+            {/* Categories */}
             <div className="flex justify-center mb-4">
               {categories?.categories?.map((category) => {
                 return (
