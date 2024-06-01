@@ -4,7 +4,6 @@ import { fetchPrivatePostsAction } from "../../redux/slices/posts/postsSlice";
 import LoadingComponent from "../Alert/Loadingcomponent";
 import { Link } from "react-router-dom";
 import { fetchCategoriesAction } from "../../redux/slices/categories/categoriesSlice";
-import { useNavigate } from "react-router-dom";
 
 const PostLists = () => {
   //! redux store
@@ -13,23 +12,28 @@ const PostLists = () => {
     (state) => state?.posts
   );
   const [category, setCategory] = useState("");
-
   const [searchTerm, setSearchTerm] = useState("");
-
-  const navigate = useNavigate();
+  const [startDate, setStartDate] = useState(""); // State for start date
+  const [endDate, setEndDate] = useState(""); // State for end date
 
   //Pagination state
   const [page, setPage] = useState(1);
 
   //dispatch
   useEffect(() => {
-    dispatch(fetchPrivatePostsAction({ category, searchTerm }));
+    console.log({ category, searchTerm, startDate, endDate, page }); // Add this line
+    dispatch(
+      fetchPrivatePostsAction({
+        category,
+        searchTerm,
+        startDate,
+        endDate,
+        page,
+      })
+    );
     dispatch(fetchCategoriesAction());
-  }, [dispatch, category, searchTerm]);
+  }, [dispatch, category, searchTerm, startDate, endDate, page]);
 
-
-
-  const { categories } = useSelector((state) => state?.categories);
   return (
     <>
       <div>
@@ -42,41 +46,33 @@ const PostLists = () => {
               backgroundRepeat: "no-repeat",
               backgroundPosition: "left top",
             }}
-          />
+          />  
           <div className="container relative z-10 px-4 mx-auto">
             <div className="md:max-w-5xl mx-auto mb-8 md:mb-16 text-center">
-              <span className="inline-block py-px px-2 mb-4 text-xs leading-5 text-green-500 bg-green-100 font-medium uppercase rounded-full shadow-sm">
-                Blog
-              </span>
-              <h3 className="mb-4 text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter">
-                Read our Trending Articles
+              <h3 className="text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter">
+                Insight Post Articles
               </h3>
-              {/* Search input */}
+              <p className="text-2xl md:text-xl mt-5 leading-tight text-darkCoolGray-900 font-bold tracking-tighter">
+                filter posts by date range
+              </p>
+              <div className="flex justify-center mt-4 mb-4">
+              {/* Date range inputs */}
               <input
-                className="border-2 border-gray-300 bg-white h-10 px-5 pr-16 rounded-lg text-sm focus:outline-none"
-                type="text"
-                placeholder="Search By Title"
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
+                type="date"
+                value={startDate}
+                onChange={(e) => setStartDate(e.target.value)}
+                className="border border-gray-300 bg-gray-200 rounded-md p-2 mr-2 focus:border-green-500 focus:outline-none"
+                placeholder="Start Date"
+              />
+              <p className="p-2 mr-2"> to </p>
+              <input
+                type="date"
+                value={endDate}
+                onChange={(e) => setEndDate(e.target.value)}
+                className="border border-gray-300 bg-gray-200 rounded-md p-2 focus:border-green-500 focus:outline-none"
+                placeholder="End Date"
               />
             </div>
-
-            {/* Categories */}
-
-            <div className="flex justify-center mb-4">
-              {categories?.categories?.map((category) => {
-                return (
-                  <button
-                    className={`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded ${
-                      category?._id === category ? "bg-blue-600" : ""
-                    }`}
-                    onClick={() => setCategory(category?._id)}
-                    key={category?._id}
-                  >
-                    {category?.name}
-                  </button>
-                );
-              })}
             </div>
             <div className="flex flex-wrap -mx-4 mb-12 md:mb-20">
               {/* loop */}

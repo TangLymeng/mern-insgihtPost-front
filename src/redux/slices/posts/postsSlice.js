@@ -33,7 +33,14 @@ export const fetchPublicPostsAction = createAsyncThunk(
 export const fetchPrivatePostsAction = createAsyncThunk(
   "posts/fetch-private-posts",
   async (
-    { page = 1, limit = 20, category = "", searchTerm = "" },
+    {
+      page = 1,
+      limit = 100,
+      category = "",
+      searchTerm = "",
+      startDate = "",
+      endDate = "",
+    },
     { rejectWithValue, getState, dispatch }
   ) => {
     //make request
@@ -44,8 +51,16 @@ export const fetchPrivatePostsAction = createAsyncThunk(
           Authorization: `Bearer ${token}`,
         },
       };
+
+      // Create the query parameters string
+      let queryParams = `page=${page}&limit=${limit}&category=${category}&searchTerm=${searchTerm}`;
+      if (startDate) queryParams += `&startDate=${startDate}`;
+      if (endDate) queryParams += `&endDate=${endDate}`;
+
+      console.log(`Fetching posts with URL: ${BASE_URL}/posts?${queryParams}`); // Add this line
+
       const { data } = await axios.get(
-        `${BASE_URL}/posts?page=${page}&limit=${limit}&category=${category}&searchTerm=${searchTerm}`,
+        `${BASE_URL}/posts?${queryParams}`,
         config
       );
       return data;
