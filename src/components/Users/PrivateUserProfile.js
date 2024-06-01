@@ -38,8 +38,6 @@ export default function PrivateUserProfile() {
     (state) => state?.users
   );
 
-  console.log(userAuth?.userInfo?.token);
-
   return (
     <>
       <div className="flex h-full">

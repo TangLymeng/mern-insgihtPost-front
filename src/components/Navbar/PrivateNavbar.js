@@ -1,32 +1,50 @@
-import { Fragment } from "react";
+import { Fragment, useEffect, useState } from "react";
 import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
-import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { logoutAction } from "../../redux/slices/users/usersSlices";
 import { useDispatch, useSelector } from "react-redux";
-
+import { fetchPrivatePostsAction } from "../../redux/slices/posts/postsSlice";
+import { FaSearch } from "react-icons/fa";
+import { TfiWrite } from "react-icons/tfi";
 
 function classNames(...classes) {
   return classes.filter(Boolean).join(" ");
 }
 
-
 export default function PrivateNavbar() {
-
   const { profile, userAuth } = useSelector((state) => state?.users);
 
-  console.log(userAuth?.userInfo?.username)
-
-  console.log(profile?.user?.profilePicture)
-
-  //dispatch
+  // dispatch
   const dispatch = useDispatch();
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("");
+  const [searchTimeout, setSearchTimeout] = useState(null);
+
   const logoutHandler = () => {
     dispatch(logoutAction());
-    //reload
+    // reload
     window.location.reload();
   };
+
+  useEffect(() => {
+    if (searchTimeout) {
+      clearTimeout(searchTimeout);
+    }
+
+    const timeoutId = setTimeout(() => {
+      dispatch(fetchPrivatePostsAction({ category: selectedCategory, searchTerm }));
+    }, 500); // Adjust the delay time as needed
+
+    setSearchTimeout(timeoutId);
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [dispatch, selectedCategory, searchTerm]);
+
+  const { categories } = useSelector((state) => state?.categories);
+
   return (
     <Disclosure as="nav" className="bg-white shadow">
       {({ open }) => (
@@ -45,7 +63,7 @@ export default function PrivateNavbar() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-shrink-0 items-center">
+                <Link to="/posts" className="flex flex-shrink-0 items-center">
                   <img
                     className="block h-5 w-auto lg:hidden"
                     src="/logo.png"
@@ -56,30 +74,42 @@ export default function PrivateNavbar() {
                     src="/logo.png"
                     alt="Your Company"
                   />
-                </div>
+                </Link>
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
-                  {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
-                  <Link
-                    to={"/"}
-                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
-                  >
-                    Home
-                  </Link>
-                  <Link
-                    to={"/posts"}
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                  >
-                    Posts
-                  </Link>
+                  {categories?.categories?.map((category) => (
+                    <Link
+                      className={classNames(
+                        "inline-flex items-center px-1 pt-1 text-sm font-medium",
+                        category?._id === selectedCategory
+                          ? "border-b-2 border-indigo-500 text-gray-900"
+                          : "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700"
+                      )}
+                      onClick={() => setSelectedCategory(category?._id)}
+                      key={category?._id}
+                    >
+                      {category?.name}
+                    </Link>
+                  ))}
                 </div>
               </div>
               <div className="flex items-center">
+                {/* Search input */}
+                <div className="relative flex items-center mr-10">
+                  <FaSearch className="absolute left-0 pl-3 h-7 w-7 text-gray-400" />
+                  <input
+                    className="pl-10 border-2 border-gray-300 bg-gray-200 bg-opacity-50 h-10 rounded-full text-sm focus:outline-none"
+                    type="text"
+                    placeholder="Search By Title"
+                    value={searchTerm}
+                    onChange={(e) => setSearchTerm(e.target.value)}
+                  />
+                </div>
                 <div className="flex-shrink-0">
                   <Link
                     to={"/add-post"}
-                    className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray"
                   >
-                    <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                    <TfiWrite className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                     Add New Post
                   </Link>
                 </div>
@@ -91,7 +121,10 @@ export default function PrivateNavbar() {
                         <span className="sr-only">Open user menu</span>
                         <img
                           className="h-8 w-8 rounded-full"
-                          src={userAuth?.userInfo?.profilePicture || "https://res.cloudinary.com/dulfgdn5w/image/upload/v1715157387/insightPost-api/tvxzyhimiqhvtoq0fuc5"}
+                          src={
+                            userAuth?.userInfo?.profilePicture ||
+                            "https://res.cloudinary.com/dulfgdn5w/image/upload/v1715157387/insightPost-api/tvxzyhimiqhvtoq0fuc5"
+                          }
                           alt={userAuth?.userInfo?.username}
                         />
                       </Menu.Button>
@@ -155,7 +188,6 @@ export default function PrivateNavbar() {
 
           <Disclosure.Panel className="md:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {/* Current: "bg-indigo-50 border-indigo-500 text-indigo-700", Default: "border-transparent text-gray-500 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-700" */}
               <Disclosure.Button
                 as="a"
                 href="#"

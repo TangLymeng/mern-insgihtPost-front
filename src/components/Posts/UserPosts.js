@@ -1,4 +1,5 @@
 import React from "react";
+import { Link } from "react-router-dom";
 
 const UserPosts = ({ posts }) => {
   return (
@@ -49,19 +50,19 @@ const UserPosts = ({ posts }) => {
                   <p className="mb-2 font-medium text-coolGray-500">
                     {new Date(post?.createdAt).toDateString()}
                   </p>
-                  <a
-                    className="inline-block mb-4 text-2xl font-bold leading-tight md:text-3xl text-coolGray-800 hover:text-coolGray-900 hover:underline"
-                    href="#"
+                  <Link
+                    className="inline-block mb-4 text-2xl md:text-3xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline"
+                    to={`/posts/${post?._id}`} // Use "to" instead of "href"
                   >
                     {post?.title}
-                  </a>
+                  </Link>
                   <div
-                        className="mb-10 text-lg line-clamp-3 font-medium md:text-xl text-coolGray-500"
-                        style={{ wordWrap: "break-word" }} // Add this style
-                        dangerouslySetInnerHTML={{
-                          __html: post?.content,
-                        }}
-                      ></div>
+                    className="mb-10 text-lg line-clamp-3 font-medium md:text-xl text-coolGray-500"
+                    style={{ wordWrap: "break-word" }} // Add this style
+                    dangerouslySetInnerHTML={{
+                      __html: post?.content,
+                    }}
+                  ></div>
                   {/* <a
                     className="inline-flex items-center text-base font-semibold text-green-500 md:text-lg hover:text-green-600"
                     href="#"

@@ -19,18 +19,21 @@ export default function BlogList() {
   const navigate = useNavigate();
 
   //Pagination state
-  const [page, setPage] = useState(1);
 
   //dispatch
   useEffect(() => {
     dispatch(
-      fetchPrivatePostsAction({ page, limit: 20, category, searchTerm })
+      fetchPrivatePostsAction({ category, searchTerm })
     );
     dispatch(fetchCategoriesAction());
-  }, [dispatch, category, searchTerm, page]);
+  }, [dispatch, category, searchTerm, ]);
 
-  const handleNext = () => setPage(page + 1);
-  const handlePrev = () => setPage(page > 1 ? page - 1 : 1);
+
+
+  // Function to strip HTML tags
+  const stripHtmlTags = (str) => {
+    return str.replace(/<\/?[^>]+(>|$)/g, "");
+  };
 
   const { categories } = useSelector((state) => state?.categories);
 
@@ -44,23 +47,6 @@ export default function BlogList() {
           <p className="mt-2 text-lg leading-8 text-gray-600">
             Learn how to grow your business with our expert advice.
           </p>
-          <div className="max-w-full sm:max-w-none overflow-x-auto">
-            <div className="flex mt-4 mb-4">
-              {categories?.categories?.map((category) => {
-                return (
-                  <button
-                    className={`mx-2 px-4 py-2 text-white bg-green-500 hover:bg-blue-600 rounded-full ${
-                      category?._id === category ? "bg-blue-600" : ""
-                    }`}
-                    onClick={() => setCategory(category?._id)}
-                    key={category?._id}
-                  >
-                    {category?.name}
-                  </button>
-                );
-              })}
-            </div>
-          </div>
 
           <div className="mt-16 space-y-20 lg:mt-20 lg:space-y-20 sm:w-full">
             {posts?.posts?.map((post) => (
@@ -68,11 +54,11 @@ export default function BlogList() {
                 key={post.id}
                 className="relative isolate flex flex-col gap-8 lg:flex-row"
               >
-                <div className="relative aspect-[16/9] sm:aspect-[2/1] lg:aspect-square lg:w-64 lg:shrink-0">
+                <div className="relative aspect-w-16 aspect-h-9 sm:aspect-w-2 sm:aspect-h-1 lg:aspect-square lg:w-64 lg:shrink-0">
                   <img
                     src={post?.image}
                     alt=""
-                    className="absolute inset-0 h-full w-full rounded-2xl bg-gray-50 object-cover"
+                    className="absolute inset-0 h-full w-full rounded-2xl object-cover"
                   />
                   <div className="absolute inset-0 rounded-2xl ring-1 ring-inset ring-gray-900/10" />
                 </div>
@@ -95,8 +81,9 @@ export default function BlogList() {
                         {post?.title}
                       </a>
                     </h3>
+
                     <p className="mt-5 line-clamp-3 text-sm leading-6 text-gray-600">
-                      {post?.content}
+                      {stripHtmlTags(post?.content)}
                     </p>
                   </div>
                   <div className="mt-6 flex border-t border-gray-900/5 pt-6">
@@ -122,7 +109,7 @@ export default function BlogList() {
             ))}
           </div>
           {/* Pagination buttons */}
-          <div className="flex justify-center items-center my-4 space-x-2">
+          {/* <div className="flex justify-center items-center my-4 space-x-2">
             <button
               className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
               onClick={handlePrev}
@@ -135,7 +122,7 @@ export default function BlogList() {
             >
               Next
             </button>
-          </div>
+          </div> */}
         </div>
       </div>
     </div>
