@@ -90,7 +90,7 @@ const PostLists = () => {
                     <div className="w-full md:w-1/2 px-4 mb-8" key={post._id}>
                       {/* Your post item JSX */}
                       <Link
-                        className="inline-block mb-4 text-2xl md:text-3xl leading-tight text-coolGray-800 hover:text-coolGray-900 font-bold hover:underline"
+                        className="block mb-6 overflow-hidden rounded-md"
                         to={`/posts/${post?._id}`} // Use "to" instead of "href"
                       >
                         <img
