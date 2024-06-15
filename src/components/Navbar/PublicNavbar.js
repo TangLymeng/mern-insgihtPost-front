@@ -3,6 +3,7 @@ import { Disclosure, Menu, Transition } from "@headlessui/react";
 import { Bars3Icon, BellIcon, XMarkIcon } from "@heroicons/react/24/outline";
 import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
+import { TfiWrite } from "react-icons/tfi";
 
 
 export default function PublicNavbar() {
@@ -57,21 +58,15 @@ export default function PublicNavbar() {
                   >
                     Login
                   </Link>
-                  <Link
-                    to={"/register"}
-                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
-                  >
-                    Register
-                  </Link>
                 </div>
               </div>
               <div className="flex items-center">
                 <div className="flex-shrink-0">
                   <Link
                     to={"/add-post"}
-                    className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                    className="ml-2 relative inline-flex items-center gap-x-1.5 rounded-md px-3 py-2 text-sm font-semibold text-gray"
                   >
-                    <PlusIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+                    <TfiWrite className="-ml-0.5 h-5 w-5" aria-hidden="true" />
                     Add New Post
                   </Link>
                 </div>

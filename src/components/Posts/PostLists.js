@@ -37,7 +37,7 @@ const PostLists = () => {
   return (
     <>
       <div>
-        <section className="relative py-24 bg-white">
+        <section className="relative py-24 bg-white px-4 sm:px-6 lg:px-8">
           <div
             className="absolute top-0 left-0 w-full h-full"
             style={{
@@ -46,7 +46,7 @@ const PostLists = () => {
               backgroundRepeat: "no-repeat",
               backgroundPosition: "left top",
             }}
-          />  
+          />
           <div className="container relative z-10 px-4 mx-auto">
             <div className="md:max-w-5xl mx-auto mb-8 md:mb-16 text-center">
               <h3 className="text-3xl md:text-5xl leading-tight text-darkCoolGray-900 font-bold tracking-tighter">
@@ -56,23 +56,23 @@ const PostLists = () => {
                 filter posts by date range
               </p>
               <div className="flex justify-center mt-4 mb-4">
-              {/* Date range inputs */}
-              <input
-                type="date"
-                value={startDate}
-                onChange={(e) => setStartDate(e.target.value)}
-                className="border border-gray-300 bg-gray-200 rounded-md p-2 mr-2 focus:border-green-500 focus:outline-none"
-                placeholder="Start Date"
-              />
-              <p className="p-2 mr-2"> to </p>
-              <input
-                type="date"
-                value={endDate}
-                onChange={(e) => setEndDate(e.target.value)}
-                className="border border-gray-300 bg-gray-200 rounded-md p-2 focus:border-green-500 focus:outline-none"
-                placeholder="End Date"
-              />
-            </div>
+                {/* Date range inputs */}
+                <input
+                  type="date"
+                  value={startDate}
+                  onChange={(e) => setStartDate(e.target.value)}
+                  className="border border-gray-300 bg-gray-200 rounded-md p-2 mr-2 focus:border-green-500 focus:outline-none"
+                  placeholder="Start Date"
+                />
+                <p className="p-2 mr-2"> to </p>
+                <input
+                  type="date"
+                  value={endDate}
+                  onChange={(e) => setEndDate(e.target.value)}
+                  className="border border-gray-300 bg-gray-200 rounded-md p-2 focus:border-green-500 focus:outline-none"
+                  placeholder="End Date"
+                />
+              </div>
             </div>
             <div className="flex flex-wrap -mx-4 mb-12 md:mb-20">
               {/* loop */}
