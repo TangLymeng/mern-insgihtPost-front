@@ -32,7 +32,7 @@ const Homepage = () => {
             </div>
           </div>
         </div>
-        <div className="relative py-20 xl:pt-16 xl:pb-24">
+        <div className="relative py-20 xl:pt-16 xl:pb-24 mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
           <div className="container px-4 mx-auto">
             <div className="flex flex-wrap items-center">
               <div className="w-full lg:w-1/2 mb-20 lg:mb-0">
@@ -46,31 +46,14 @@ const Homepage = () => {
 
                 <ul>
                   <li className="mb-6 flex items-center">
-                    <img
-                      className="mr-3"
-                      src="flex-ui-assets/elements/checkbox-green.svg"
-                    />
                     <p className="text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
                       Unpacking the Latest in Technology and Innovation
                     </p>
                   </li>
                   <li className="mb-6 flex items-center">
-                    <img
-                      className="mr-3"
-                      src="flex-ui-assets/elements/checkbox-green.svg"
-                    />
                     <p className="text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
                       Great if your blog is about sharing innovative and
                       accessible recipes.
-                    </p>
-                  </li>
-                  <li className="flex items-center">
-                    <img
-                      className="mr-3"
-                      src="flex-ui-assets/elements/checkbox-green.svg"
-                    />
-                    <p className="text-lg md:text-xl leading-7 text-coolGray-500 font-medium">
-                      Praesent varius justo vel justo pulvinar
                     </p>
                   </li>
                 </ul>
