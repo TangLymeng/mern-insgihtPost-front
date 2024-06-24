@@ -28,8 +28,6 @@ export default function BlogList() {
     dispatch(fetchCategoriesAction());
   }, [dispatch, category, searchTerm, ]);
 
-
-
   // Function to strip HTML tags
   const stripHtmlTags = (str) => {
     return str.replace(/<\/?[^>]+(>|$)/g, "");
@@ -38,6 +36,7 @@ export default function BlogList() {
   const { categories } = useSelector((state) => state?.categories);
 
   return (
+    console.log(posts),
     <div className="bg-white py-5">
       <div className="px-6 lg:px-8 ">
         <div className="mx-auto max-w-7xl lg:max-w-7xl px-4 sm:px-6 lg:px-8 ">

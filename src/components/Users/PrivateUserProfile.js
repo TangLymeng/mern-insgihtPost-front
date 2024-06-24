@@ -37,8 +37,10 @@ export default function PrivateUserProfile() {
   const { userAuth, user, loading, error, profile } = useSelector(
     (state) => state?.users
   );
+  console.log(profile);
 
   return (
+
     <>
       <div className="flex h-full">
         <div className="flex flex-col flex-1 min-w-0 overflow-hidden">

@@ -11,6 +11,7 @@ import ErrorMsg from "../Alert/ErrorMsg";
 import PostStats from "./PostStats";
 import calculateReadingTime from "../../utils/calculateReadingTime";
 import AddComment from "../Comments/AddComment";
+import Swal from 'sweetalert2'; // Import SweetAlert2
 
 const PostDetails = () => {
   //! navigation
@@ -41,24 +42,38 @@ const PostDetails = () => {
 
   const isCreator = creator === loginUser;
 
-  // console.log({
-  //   creator,
-  //   loginUser,
-  // });
-
-  //! Delete post handler
-  const deletePostHandler = () => {
-    dispatch(deletePostAction(postId));
+  //! Handle post delete success
+  useEffect(() => {
     if (success) {
       navigate("/posts");
     }
+  }, [success, navigate]);
+
+  //! Delete post handler
+  const deletePostHandler = () => {
+    Swal.fire({
+      title: 'Are you sure?',
+      text: "You won't be able to revert this!",
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Yes, delete it!'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        dispatch(deletePostAction(postId));
+        Swal.fire(
+          'Deleted!',
+          'Your post has been deleted.',
+          'success'
+        );
+      }
+    });
   };
 
   const handleTagClick = (tagName) => {
     navigate(`/posts/tags/${tagName}`, { state: { tagName } });
   };
-
-  console.log({ post });
 
   return (
     <>
