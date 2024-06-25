@@ -14,8 +14,9 @@ import UpdatePost from "./components/Posts/UpdatePost";
 import UploadProfileImage from "./components/Users/UploadProfileImage";
 import UploadCoverImage from "./components/Users/UploadCoverImage";
 import PostsByTag from "./components/Posts/PostsByTag";
-import BlogList from "./Templates/BlogList";
+import BlogList from "./components/Posts/BlogList";
 import TestAddPost from "./Templates/TestAddPost";
+import NotFound from "./components/NotFound/NotFound"; // Import NotFound component
 
 export default function App() {
   //! Get the login user from store
@@ -128,6 +129,8 @@ export default function App() {
           }
         ></Route>
 
+        {/* Not Found Route */}
+        <Route path="*" element={<NotFound />}></Route> 
       </Routes>
     </BrowserRouter>
   );

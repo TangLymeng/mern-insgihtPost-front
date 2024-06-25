@@ -123,7 +123,7 @@ const AddPost = () => {
           </label>
 
           <label className="mb-4 flex flex-col w-full">
-            <span className="mb-1 text-coolGray-800 font-medium">Image</span>
+            <span className="mb-1 text-coolGray-800 font-medium">Thumbnail Image</span>
             <input
               className="py-3 px-3 leading-5 w-full text-coolGray-400 font-normal border border-coolGray-200 outline-none focus:ring-2 focus:ring-green-500 focus:ring-opacity-50 rounded-lg shadow-sm"
               type="file"

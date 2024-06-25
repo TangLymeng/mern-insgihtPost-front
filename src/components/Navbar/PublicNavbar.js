@@ -5,7 +5,6 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 import { Link } from "react-router-dom";
 import { TfiWrite } from "react-icons/tfi";
 
-
 export default function PublicNavbar() {
   return (
     <Disclosure as="nav" className="bg-white shadow">
@@ -25,24 +24,27 @@ export default function PublicNavbar() {
                     )}
                   </Disclosure.Button>
                 </div>
-                <div className="flex flex-shrink-0 items-center">
-                  {/* Logo here */}
-                  <img
-                    className="block h-8 w-auto lg:hidden"
-                    src="/logo.png"
-                    alt="Your Company"
-                  />
-                  <img
-                    className="hidden h-8 w-auto lg:block"
-                    src="/logo.png"
-                    alt="Your Company"
-                  />
-                </div>
+                <Link to={"/"} className="flex-shrink-0 flex items-center">
+                  <div className="flex flex-shrink-0 items-center">
+                    {/* Logo here */}
+                    <img
+                      className="block h-8 w-auto lg:hidden"
+                      src="/logo.png"
+                      alt="Your Company"
+                    />
+                    <img
+                      className="hidden h-8 w-auto lg:block"
+                      src="/logo.png"
+                      alt="Your Company"
+                    />
+                  </div>
+                </Link>
+
                 <div className="hidden md:ml-6 md:flex md:space-x-8">
                   {/* Current: "border-indigo-500 text-gray-900", Default: "border-transparent text-gray-500 hover:border-gray-300 hover:text-gray-700" */}
                   <Link
                     to={"/"}
-                    className="inline-flex items-center border-b-2 border-indigo-500 px-1 pt-1 text-sm font-medium text-gray-900"
+                    className="inline-flex items-center border-b-2 border-transparent px-1 pt-1 text-sm font-medium text-gray-500 hover:border-gray-300 hover:text-gray-700"
                   >
                     Home
                   </Link>

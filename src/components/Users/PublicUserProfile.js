@@ -33,7 +33,7 @@ export default function PublicUserProfile() {
                   <div>
                     <img
                       className="h-32 w-full object-cover lg:h-48"
-                      src={profile?.user?.coverImage || "https://res.cloudinary.com/dulfgdn5w/image/upload/v1715157387/insightPost-api/tvxzyhimiqhvtoq0fuc5"}
+                      src={profile?.user?.coverImage || "https://www.trendycovers.com/covers/Color_Splash_facebook_cover_1344575811.jpg"}
                       alt={profile?.user?.username}
                     />
                   </div>
@@ -42,7 +42,7 @@ export default function PublicUserProfile() {
                       <div className="flex">
                         <img
                           className="h-24 w-24 rounded-full ring-4 ring-white sm:h-32 sm:w-32"
-                          src={profile?.user?.profilePicture || "https://res.cloudinary.com/dulfgdn5w/image/upload/v1715157387/insightPost-api/tvxzyhimiqhvtoq0fuc5"}
+                          src={profile?.user?.profilePicture || "https://media.istockphoto.com/id/1495088043/vector/user-profile-icon-avatar-or-person-icon-profile-picture-portrait-symbol-default-portrait.jpg?s=1024x1024&w=is&k=20&c=oGqYHhfkz_ifeE6-dID6aM7bLz38C6vQTy1YcbgZfx8="}
                           alt={profile?.user?.username}
                         />
                       </div>
