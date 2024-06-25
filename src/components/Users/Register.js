@@ -60,7 +60,7 @@ const Register = () => {
         {/* Display error */}
         {error && <ErrorMsg message={error?.message} />}
         {/* success message */}
-        {success && <SuccessMsg message="Login Success" />}
+        {success && <SuccessMsg message="Signup Success Let Login Now" />}
         <label className="mb-4 flex flex-col w-full">
           <span className="mb-1 text-coolGray-800 font-medium">Username</span>
           <input
