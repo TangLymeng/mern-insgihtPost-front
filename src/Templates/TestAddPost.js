@@ -37,7 +37,7 @@ export class TestAddPost extends Component {
                 >
                   <div className="flex flex-col items-center justify-center pt-5 pb-6">
                     <svg
-                      className="w-8 h-8 mb-4 dark:text-gray-400"
+                      className="w-8 h-8z mb-4 dark:text-gray-400"
                       aria-hidden="true"
                       xmlns="http://www.w3.org/2000/svg"
                       fill="none"
